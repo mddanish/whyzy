@@ -9,10 +9,10 @@ let db: CentralDb | undefined;
 
 export function getCentralDb(): CentralDb {
   if (!db) {
-    const url = process.env.TURSO_CENTRAL_URL;
-    if (!url) throw new Error("TURSO_CENTRAL_URL is not set");
+    const url = process.env.TURSO_DATABASE_URL;
+    if (!url) throw new Error("TURSO_DATABASE_URL is not set");
     db = drizzle(
-      createClient({ url, authToken: process.env.TURSO_CENTRAL_AUTH_TOKEN }),
+      createClient({ url, authToken: process.env.TURSO_AUTH_TOKEN }),
       { schema },
     );
   }

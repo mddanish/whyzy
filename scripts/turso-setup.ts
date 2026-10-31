@@ -12,8 +12,8 @@ const ENV_FILE = ".env.local";
 
 async function main() {
   const current = readFileSync(ENV_FILE, "utf8");
-  if (/^TURSO_CENTRAL_URL=.+/m.test(current)) {
-    console.log(`TURSO_CENTRAL_URL already set in ${ENV_FILE}; nothing to do.`);
+  if (/^TURSO_DATABASE_URL=.+/m.test(current)) {
+    console.log(`TURSO_DATABASE_URL already set in ${ENV_FILE}; nothing to do.`);
     return;
   }
   const group = await ensureMumbaiGroup();
@@ -22,11 +22,11 @@ async function main() {
   const { hostname } = await createDatabase(DB_NAME, group.name);
   const token = await createDatabaseToken(DB_NAME);
 
-  const cleaned = current.replace(/^TURSO_CENTRAL_(URL|AUTH_TOKEN)=.*\n?/gm, "");
+  const cleaned = current.replace(/^TURSO_(DATABASE_URL|AUTH_TOKEN)=.*\n?/gm, "");
   const sep = cleaned === "" || cleaned.endsWith("\n") ? "" : "\n";
   writeFileSync(
     ENV_FILE,
-    `${cleaned}${sep}TURSO_CENTRAL_URL=libsql://${hostname}\nTURSO_CENTRAL_AUTH_TOKEN=${token}\n`,
+    `${cleaned}${sep}TURSO_DATABASE_URL=libsql://${hostname}\nTURSO_AUTH_TOKEN=${token}\n`,
   );
   console.log(`Created ${DB_NAME} at libsql://${hostname}; URL and token saved to ${ENV_FILE}.`);
 }

@@ -10,9 +10,9 @@
     "test": "vitest run",
     "typecheck": "tsc --noEmit",
     "db:generate": "drizzle-kit generate",
-    "db:migrate": "tsx --env-file=.env.local scripts/migrate-central.ts",
-    "turso:setup": "tsx --env-file=.env.local scripts/turso-setup.ts",
-    "keys:create": "tsx --env-file=.env.local scripts/create-access-keys.ts"
+    "db:migrate": "tsx --env-file-if-exists=.env.local scripts/migrate-central.ts",
+    "turso:setup": "tsx --env-file-if-exists=.env.local scripts/turso-setup.ts",
+    "keys:create": "tsx --env-file-if-exists=.env.local scripts/create-access-keys.ts"
   },
   "dependencies": {
     "@auth/drizzle-adapter": "^1.11.3",
