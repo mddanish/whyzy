@@ -32,6 +32,7 @@ Voice-first, safe AI assistant for children aged 4+. Invite-only pilot.
 
 ## Layout
 
+- `src/db/central/client.ts`: `CENTRAL_DB_URL`/`CENTRAL_DB_TOKEN` win over `TURSO_*` (Vercel's Turso integration branches a DB per deployment; production pins the main DB).
 - `src/auth.ts`: Auth.js config. `src/lib/dal.ts`: session check (call inside `<Suspense>`; Cache Components are on).
 - `src/db/central/`: central DB schema and client. `drizzle/central/`: migrations.
 - `src/lib/access-keys.ts`: invite keys and parent registration (one transaction).

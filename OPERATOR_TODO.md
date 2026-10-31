@@ -6,6 +6,7 @@ Things only the operator can do. The app runs without them, with the fallback no
 
 | # | What | Why | Until then |
 |---|------|-----|------------|
+| 0 | Check the Vercel Turso integration's per-deployment database branching. Each deployment gets its own branch DB (`dpl-…`) in `TURSO_DATABASE_URL`, so production data reset on every deploy. Claude set `CENTRAL_DB_URL` and `CENTRAL_DB_TOKEN` (Production only) to the main DB as a fix. If you turn branching off for Production, you can delete those two variables. | Keep parent accounts and access keys across deploys. | Fixed by the override; nothing else needed. |
 | 1 | Set `TURSO_API_TOKEN` and `TURSO_ORG` in Vercel (Production + Preview). Use the Turso org that holds the central DB (created through the Vercel Turso integration, region `aws-ap-south-1`). | Family databases are created per family through the Turso Platform API. | Parents can sign up, but the parent area shows "Your family space is not ready yet". |
 | 2 | Add a credit card to the Vercel team's AI Gateway (Vercel dashboard > AI Gateway). Then set a low monthly budget there. | AI Gateway refuses all requests, even the free Nemotron model, with `customer_verification_required`. | Whyzy answers every question with a safe fixed reply ("Hmm, let's talk about something else…"). |
 | 3 | Choose the moderation model (SPEC open item). Candidate: `openai/gpt-oss-safeguard-20b` on AI Gateway. Set `MODERATION_MODEL` in Vercel, then run `npm run redteam:live`. | Second check on every reply. | Rule-based output moderation only (English and Hindi keyword rules). |
@@ -30,6 +31,7 @@ Things only the operator can do. The app runs without them, with the fallback no
 
 ## Already done by Claude
 
+- `CENTRAL_DB_URL`, `CENTRAL_DB_TOKEN` (Production): main central DB, see item 0.
 - `AUTH_SECRET`, `CRON_SECRET`, `NEXT_TELEMETRY_DISABLED`, `WHYZY_MODEL`, `WHYZY_STAGE=test` set in Vercel.
 - Vercel project framework set to Next.js; function region `bom1`.
 - Central DB migrated (Mumbai).
