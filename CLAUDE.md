@@ -42,4 +42,6 @@ Voice-first, safe AI assistant for children aged 4+. Invite-only pilot.
 - `FAMILY_DB_LOCAL_DIR`: local SQLite family DBs for development and tests only.
 - `src/lib/ai/`: model config (`WHYZY_MODEL`, `WHYZY_STAGE`) and age-band system prompt.
 - `src/lib/chat/`: chat service (limits, model call, logging); `src/app/api/chat/route.ts`: child chat API.
+- `src/lib/safety/`: input filter (rules, PII stripping, intent), fixed replies, output moderation.
+- `tests/redteam/cases.json`: versioned red-team set; `tests/redteam.test.ts` runs it in `npm test`, CI and every Vercel build. `npm run redteam:live` runs it against the real model.
 - `OPERATOR_TODO.md`: things only the operator can do.

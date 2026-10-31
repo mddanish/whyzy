@@ -1,12 +1,12 @@
 "use server";
 
 import { redirect } from "next/navigation";
-import { eq } from "drizzle-orm";
+import { eq, isNull } from "drizzle-orm";
 import * as z from "zod";
 import { auth, signOut } from "@/auth";
 import { getCentralDb } from "@/db/central/client";
 import { users } from "@/db/central/schema";
-import { AGE_BANDS, childProfiles, INPUT_LANGUAGES, settings } from "@/db/family/schema";
+import { AGE_BANDS, childProfiles, INPUT_LANGUAGES, safetyEvents, settings } from "@/db/family/schema";
 import { enterChildMode, getChildModeId, leaveChildMode } from "@/lib/child-mode";
 import { getCurrentParent, getFamilySettings, requireFamily } from "@/lib/dal";
 import { deleteParentAccount, ensureFamily, familyDb } from "@/lib/family";
@@ -154,4 +154,10 @@ export async function deleteAccountAction(_prev: ActionState, formData: FormData
   await leaveChildMode();
   await signOut({ redirectTo: "/?deleted=1" });
   return undefined;
+}
+
+export async function markAlertsSeenAction(): Promise<void> {
+  const { db } = await requireFamily();
+  await db.update(safetyEvents).set({ seenAt: new Date() }).where(isNull(safetyEvents.seenAt));
+  redirect("/parent/alerts");
 }

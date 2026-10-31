@@ -3,7 +3,8 @@ import Link from "next/link";
 import { signOutAction } from "@/app/actions/auth";
 import { consentAction, startChildModeAction } from "@/app/actions/family";
 import { buttonClass, Card, Loading, secondaryButtonClass } from "@/app/ui";
-import { childProfiles } from "@/db/family/schema";
+import { and, eq, isNull } from "drizzle-orm";
+import { childProfiles, safetyEvents } from "@/db/family/schema";
 import { getFamilySettings, getParentContext } from "@/lib/dal";
 import { getPet } from "@/lib/pets";
 
@@ -40,10 +41,20 @@ async function ParentHome() {
   const children = await db.select().from(childProfiles).orderBy(childProfiles.createdAt);
 
   if (!s.consentAt) return <><ConsentGate name={parent.name} />{signOut}</>;
+  const urgent = await db
+    .select({ id: safetyEvents.id })
+    .from(safetyEvents)
+    .where(and(isNull(safetyEvents.seenAt), eq(safetyEvents.actionTaken, "parent_alert")));
+  const unseen = await db.select({ id: safetyEvents.id }).from(safetyEvents).where(isNull(safetyEvents.seenAt));
 
   return (
     <>
       <p className="mb-6">Hi {parent.name ?? "there"}!</p>
+      {urgent.length > 0 && (
+        <Link href="/parent/alerts" role="alert" className="mb-4 block rounded-lg border border-red-300 bg-red-50 p-3 text-sm font-medium text-red-900">
+          ⚠️ Whyzy noticed your child may be upset or unsafe ({urgent.length}). Please check on them now. Open alerts →
+        </Link>
+      )}
       {!s.parentPinHash && (
         <p className="mb-4 rounded-lg bg-amber-50 p-3 text-sm text-amber-900">
           Set a parent PIN in <Link href="/parent/settings" className="underline">Settings</Link> before your child uses Whyzy.
@@ -74,6 +85,7 @@ async function ParentHome() {
       </ul>
       <Link href="/parent/children/new" className={`${buttonClass} block text-center`}>Add a child</Link>
       <nav className="mt-8 flex flex-wrap gap-3 text-sm">
+        <Link href="/parent/alerts" className={secondaryButtonClass}>Safety alerts{unseen.length > 0 ? ` (${unseen.length})` : ""}</Link>
         <Link href="/parent/settings" className={secondaryButtonClass}>Settings and PIN</Link>
         <Link href="/parent/account" className={secondaryButtonClass}>Delete account</Link>
       </nav>
