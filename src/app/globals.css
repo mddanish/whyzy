@@ -24,3 +24,58 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+/* Child-mode avatar animations */
+.wz-avatar { transition: filter 0.4s; }
+.wz-idle { animation: wz-bob 3s ease-in-out infinite; }
+.wz-listening { animation: wz-bob 1.2s ease-in-out infinite; }
+.wz-thinking { animation: wz-tilt 1.6s ease-in-out infinite; }
+.wz-speaking { animation: wz-talk 0.35s ease-in-out infinite alternate; }
+.wz-happy { animation: wz-jump 0.6s ease-out 3; }
+.wz-winddown { filter: saturate(0.4) brightness(0.9); animation: wz-bob 5s ease-in-out infinite; }
+.wz-ring { border: 6px solid; animation: wz-pulse 1s ease-out infinite; }
+@keyframes wz-bob { 50% { transform: translateY(-6px); } }
+@keyframes wz-tilt { 25% { transform: rotate(-6deg); } 75% { transform: rotate(6deg); } }
+@keyframes wz-talk { to { transform: scale(1.06); } }
+@keyframes wz-jump { 40% { transform: translateY(-24px); } }
+@keyframes wz-pulse { from { opacity: 0.8; transform: scale(1); } to { opacity: 0; transform: scale(1.25); } }
+@media (prefers-reduced-motion: reduce) {
+  .wz-avatar, .wz-ring { animation: none !important; }
+}
+
+/* Child mode theme, adapted from the Figma "Storytelling App Design for Kids". */
+.wz-child {
+  --wz-bg: #1f1d3d;
+  --wz-surface: #2a2850;
+  --wz-border: rgba(255, 255, 255, 0.18);
+  --wz-fg: #ffffff;
+  --wz-fg-2: rgba(255, 255, 255, 0.7);
+  background: radial-gradient(120% 80% at 50% 0%, #2d2a5c 0%, var(--wz-bg) 60%);
+  color: var(--wz-fg);
+}
+.wz-card {
+  position: relative;
+  border: 1px solid var(--wz-border);
+  border-radius: 10px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.04));
+  overflow: hidden;
+}
+.wz-cover { border-radius: 10px; box-shadow: 4px 4px 16px rgba(0, 0, 0, 0.3); }
+.wz-title { font-family: var(--font-quicksand), sans-serif; font-weight: 700; letter-spacing: -0.6px; text-shadow: 0 4px 4px rgba(0, 0, 0, 0.25); }
+.wz-pill {
+  display: inline-flex; align-items: center; gap: 8px; padding: 4px; border-radius: 34px; width: fit-content; align-self: flex-start;
+  border: 1px solid rgba(0, 0, 0, 0.5); background: rgba(0, 0, 0, 0.1); box-shadow: inset 0 0 6px #000;
+}
+.wz-pill > span {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 36px; padding: 8px 18px;
+  border-radius: 30px; border: 1px solid rgba(0, 0, 0, 0.5); color: #fff; font-weight: 700; text-transform: uppercase;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.25);
+  box-shadow: inset 0 2px 2px rgba(255, 255, 255, 0.6), inset 0 -2px 2px rgba(255, 255, 255, 0.5);
+  background: radial-gradient(120% 160% at 50% 0%, #65eaff 0%, #47b0fe 41%, #2876fd 82%);
+}
+.wz-pill.wz-orange > span { background: radial-gradient(120% 160% at 50% 0%, #ffa974 0%, #f5805d 41%, #ea5745 82%); }
+.wz-pill.wz-big > span { min-height: 64px; padding: 14px 28px; font-size: 1.5rem; }
+.wz-pill:active { transform: scale(0.96); }
+.wz-pill:disabled { opacity: 0.5; }
+.wz-row { display: flex; gap: 24px; overflow-x: auto; padding: 12px 2px 16px; scroll-snap-type: x mandatory; }
+.wz-row > * { scroll-snap-align: start; flex-shrink: 0; }

@@ -11,9 +11,11 @@ async function main() {
   if (!(count >= 1 && count <= 50) || !(days >= 1 && days <= 365)) {
     throw new Error("count must be 1–50 and days 1–365");
   }
-  const url = process.env.TURSO_DATABASE_URL;
+  // Same precedence as src/db/central/client.ts.
+  const url = process.env.CENTRAL_DB_URL || process.env.TURSO_DATABASE_URL;
   if (!url) throw new Error("TURSO_DATABASE_URL is not set");
-  const db = drizzle(createClient({ url, authToken: process.env.TURSO_AUTH_TOKEN }), { schema });
+  const authToken = process.env.CENTRAL_DB_URL ? process.env.CENTRAL_DB_TOKEN : process.env.TURSO_AUTH_TOKEN;
+  const db = drizzle(createClient({ url, authToken }), { schema });
 
   const keys = Array.from({ length: count }, generateAccessKey);
   const expiresAt = new Date(Date.now() + days * 86_400_000);

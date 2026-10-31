@@ -1,0 +1,94 @@
+{
+  "module": "nursery-rhymes",
+  "version": 1,
+  "items": [
+    {
+      "collection": "original-rhymes",
+      "title": "Clap Clap Morning",
+      "ageBands": [
+        "4-6",
+        "7-9"
+      ],
+      "parts": [
+        "Clap, clap, the sun is up,\nMilk is waiting in my cup.",
+        "Stretch up high and touch your toes,\nWiggle, wiggle, there it goes!",
+        "Clap, clap, a brand new day,\nTime to learn and time to play!"
+      ],
+      "tags": [
+        "morning",
+        "routine"
+      ],
+      "source": "seed"
+    },
+    {
+      "collection": "original-rhymes",
+      "title": "Five Little Parrots",
+      "ageBands": [
+        "4-6",
+        "7-9"
+      ],
+      "parts": [
+        "Five little parrots sitting on a tree,\nOne flew away, so now count with me.",
+        "Four little parrots, green and bright,\nOne flew home to sleep tonight.",
+        "Three, two, one, they all flew free,\nNo more parrots on the tree!"
+      ],
+      "tags": [
+        "counting",
+        "birds"
+      ],
+      "source": "seed"
+    },
+    {
+      "collection": "traditional-rhymes",
+      "title": "Twinkle, Twinkle, Little Star",
+      "ageBands": [
+        "4-6",
+        "7-9"
+      ],
+      "parts": [
+        "Twinkle, twinkle, little star,\nHow I wonder what you are!",
+        "Up above the world so high,\nLike a diamond in the sky.",
+        "Twinkle, twinkle, little star,\nHow I wonder what you are!"
+      ],
+      "tags": [
+        "stars",
+        "night"
+      ],
+      "source": "traditional"
+    },
+    {
+      "collection": "traditional-rhymes",
+      "title": "Baa, Baa, Black Sheep",
+      "ageBands": [
+        "4-6",
+        "7-9"
+      ],
+      "parts": [
+        "Baa, baa, black sheep,\nHave you any wool?\nYes sir, yes sir,\nThree bags full.",
+        "One for the master,\nOne for the dame,\nAnd one for the little boy\nWho lives down the lane."
+      ],
+      "tags": [
+        "sheep",
+        "farm"
+      ],
+      "source": "traditional"
+    },
+    {
+      "collection": "traditional-rhymes",
+      "title": "Hickory Dickory Dock",
+      "ageBands": [
+        "4-6",
+        "7-9"
+      ],
+      "parts": [
+        "Hickory, dickory, dock,\nThe mouse ran up the clock.",
+        "The clock struck one,\nThe mouse ran down,\nHickory, dickory, dock."
+      ],
+      "tags": [
+        "mouse",
+        "clock"
+      ],
+      "source": "traditional"
+    }
+  ]
+}

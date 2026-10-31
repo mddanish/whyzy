@@ -1,0 +1,46 @@
+{
+  "module": "moral-stories",
+  "version": 1,
+  "items": [
+    {
+      "collection": "animal-fables",
+      "title": "The Crow and the Pebbles",
+      "ageBands": [
+        "7-9",
+        "10-12"
+      ],
+      "parts": [
+        "A thirsty crow found a pot with a little water at the bottom.",
+        "His beak could not reach it. The crow thought and thought.",
+        "He dropped pebbles into the pot, one by one. The water rose higher and higher.",
+        "Soon the crow could drink. He flew away happy.",
+        "The lesson: when you think patiently, you can solve hard problems."
+      ],
+      "tags": [
+        "patience",
+        "crow"
+      ],
+      "source": "seed"
+    },
+    {
+      "collection": "animal-fables",
+      "title": "The Ant and the Dove",
+      "ageBands": [
+        "7-9",
+        "10-12"
+      ],
+      "parts": [
+        "A little ant slipped into a stream.",
+        "A kind dove dropped a leaf, and the ant climbed on to reach the bank.",
+        "Later, the ant saw the dove looking sleepy on a branch and tickled her foot to wake her for her dinner.",
+        "The dove and the ant smiled at each other.",
+        "The lesson: kindness comes back to those who are kind."
+      ],
+      "tags": [
+        "kindness",
+        "friendship"
+      ],
+      "source": "seed"
+    }
+  ]
+}

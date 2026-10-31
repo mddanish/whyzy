@@ -1,0 +1,43 @@
+{
+  "module": "fun-facts",
+  "version": 1,
+  "items": [
+    {
+      "collection": "animal-facts",
+      "title": "Octopus Hearts",
+      "ageBands": [
+        "7-9",
+        "10-12"
+      ],
+      "parts": [
+        "An octopus has three hearts.",
+        "Two hearts help it breathe with its gills, and one heart works for the rest of its body.",
+        "An octopus can also change colour to hide among rocks!"
+      ],
+      "tags": [
+        "ocean",
+        "octopus"
+      ],
+      "source": "seed"
+    },
+    {
+      "collection": "space-facts",
+      "title": "The Sun Is a Star",
+      "ageBands": [
+        "4-6",
+        "7-9",
+        "10-12"
+      ],
+      "parts": [
+        "The Sun is a star, just like the stars at night.",
+        "It looks bigger because it is much closer to us.",
+        "The light from the Sun takes about eight minutes to reach Earth."
+      ],
+      "tags": [
+        "sun",
+        "space"
+      ],
+      "source": "seed"
+    }
+  ]
+}

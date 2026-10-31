@@ -1,0 +1,46 @@
+{
+  "module": "why-questions",
+  "version": 1,
+  "items": [
+    {
+      "collection": "sky-and-weather",
+      "title": "Why Is the Sky Blue?",
+      "ageBands": [
+        "7-9",
+        "10-12"
+      ],
+      "parts": [
+        "Why is the sky blue?",
+        "Sunlight looks white, but it is made of many colours.",
+        "When sunlight comes into the air, the blue light bounces around the most.",
+        "So when we look up, we see blue everywhere!",
+        "Try this: look at the sky in the morning and in the evening with a grown-up. Do the colours change?"
+      ],
+      "tags": [
+        "sky",
+        "light"
+      ],
+      "source": "seed"
+    },
+    {
+      "collection": "animals-and-plants",
+      "title": "Why Do Leaves Change Colour?",
+      "ageBands": [
+        "7-9",
+        "10-12"
+      ],
+      "parts": [
+        "Why do some leaves change colour?",
+        "Leaves are green because of something called chlorophyll. It helps them make food from sunlight.",
+        "When the weather gets cooler, some trees stop making it.",
+        "Then the yellow and orange colours, hidden all along, can show!",
+        "Try this: collect leaves of different colours on a walk with a grown-up."
+      ],
+      "tags": [
+        "trees",
+        "seasons"
+      ],
+      "source": "seed"
+    }
+  ]
+}

@@ -4,7 +4,7 @@ Oct 31, 2026 · @Mohammed Danish Amber
 
 ## Overview
 
-Whyzy is a voice-first, safe AI assistant for children aged 4 and up, built on Vercel and the AI SDK, run first as a closed test and then as an invite-only pilot. Built with Claude Code in a remote environment.
+Whyzy is a voice-first, safe AI companion for children aged 4 and up. Its main experience is a library of pre-written, safety-checked content cards (stories, poems, nursery rhymes, good and bad habits, and more) that children listen to; free chat with Whyzy is optional and parent-controlled. It is built on Vercel and the AI SDK, run first as a closed test and then as an invite-only pilot. Built with Claude Code in a remote environment.
 
 **Phases**
 
@@ -323,9 +323,89 @@ A fixed set of unsafe and manipulative prompts runs against the safety layer on 
 - Manual red-team round before the pilot opens to families.
 - Every real safety event in the pilot becomes a new test case (without the child's details).
 
+## Content cards and modules (v2)
+
+Whyzy is not only a chat assistant. Its main experience is a library of cards with pre-written, safety-checked content that the child listens to. Free chat with Whyzy is an extra that the parent turns on.
+
+**Modules**
+
+Each module is one section of the library. Requested by the operator:
+
+- **Stories:** short original stories by age band.
+- **Poems:** short original poems.
+- **Nursery rhymes:** original rhymes, plus traditional public-domain rhymes.
+- **Good things and bad things:** good and bad habits and choices (sharing, honesty, brushing teeth, not hitting).
+
+Also included (accepted by the operator):
+
+- **Fun facts:** animals, space, nature, the body.
+- **Riddles and jokes:** gentle, age-appropriate.
+- **Why questions:** "Why is the sky blue?" answered simply.
+- **Feelings and kindness:** naming feelings, being kind.
+- **Calm and bedtime:** breathing exercises, sleepy stories.
+- **Numbers and letters:** counting and alphabet songs.
+- **Festivals and India:** festivals, places and traditions, told simply.
+- **Moral stories:** original fables in the style of the Panchatantra.
+
+**Cards**
+
+- Module → collection card (for example "Animal stories") → content card (one story, poem or rhyme).
+- A content card can have parts (pages of a story, verses of a rhyme), played in order.
+- Each content item has: title, module, collection, age bands, body text (English), parts, tags, status, and generation metadata.
+- Card visual design comes from the Figma file "Storytelling App Design for Kids" (to be adapted in the child UI phase).
+
+**Content library**
+
+- Shared content, not child data, so it lives in its own Turso database (`content`) in Mumbai, apart from `central` and the family databases.
+- Children only ever get stored content with status `published`.
+- Content is read from the library; nothing is generated while a child is using the app.
+
+**Agents and skills**
+
+- Each module has two versioned files in the repo: `content/modules/<module>/AGENT.md` (role, tone, rules, what is never allowed) and `content/modules/<module>/SKILL.md` (format, length and vocabulary per age band, examples).
+- A shared validator agent (`content/validator/AGENT.md`) checks every new item for child safety.
+- Generation is operator-only: a script generates items in batches with the module's agent and skill, through AI Gateway.
+
+**Content pipeline**
+
+1. Operator runs generation for a module, collection, age band and count.
+2. Each new item is stored with status `draft` and its metadata: module, agent and skill versions, model, date.
+3. Rule-based moderation runs (the same rules as chat output).
+4. An LLM validator, a different call from the generator, checks the item for child safety and age fit. It returns pass or fail with a category.
+5. Items that pass both checks become `validated`; items that fail become `rejected` with the reason.
+6. Validated items become `published` (see open items for operator review).
+7. Content can be unpublished at any time; it then disappears for children at once.
+
+**Parental controls (per child)**
+
+- **Whyzy on or off:** master switch; when off, the child sees nothing.
+- **Modules:** the parent picks which modules the child can use.
+- **Chat:** free chat with Whyzy, off by default.
+- **Show text:** off by default, so the child gets audio only.
+- The child gets only what the parent turned on.
+
+**Child experience**
+
+- Big module cards, then collection cards, then content cards.
+- Tapping a content card plays it as audio, with the avatar speaking. Text appears only if the parent turned it on.
+- Chat (push-to-talk) appears only if the parent turned it on.
+
+**Audio**
+
+- Content is read aloud with the same TTS as chat: server-side ElevenLabs, or the browser's on-device voice as a fallback.
+- Child audio is still never recorded or stored.
+
+**Decisions (operator, 31 Oct 2026)**
+
+- Items publish automatically once rule moderation and the LLM validator both pass.
+- Narration audio is made once per published item and stored.
+- All proposed modules are kept (12 modules).
+- Nursery rhymes: both original rhymes and traditional public-domain rhymes (`source = traditional`).
+- Content is English only.
+
 ## Build phases for Claude Code
 
-Build in seven phases, each ending with a working deploy; the safety test suite comes before any voice or avatar work.
+Build in eleven phases, each ending with a working deploy; the safety test suite comes before any voice or avatar work.
 
 1. **Foundation:** Next.js app on Vercel (Mumbai region), Turso `central` DB, Auth.js with the Drizzle adapter, access-key gate, environment variables.
 2. **Families and profiles:** family DB created on sign-up via Turso's API, child profiles, settings, parent PIN, account deletion.
@@ -334,6 +414,10 @@ Build in seven phases, each ending with a working deploy; the safety test suite 
 5. **Voice:** push-to-talk with on-device STT, server-side ElevenLabs TTS with name stripping.
 6. **Avatar and child UI:** Petdex sprites self-hosted, state mapping, large-button child mode, spoken AI disclosure, time limits and wind-down.
 7. **Parent dashboard and pilot hardening:** logs, alerts, retention jobs, data hygiene checklist, switch to the pilot model with training off.
+8. **Content library:** `content` database in Mumbai, modules, collections, items and parts, statuses, read API that returns published content only.
+9. **Agents, skills and pipeline:** `AGENT.md` and `SKILL.md` per module, validator agent, operator generation script, rule and LLM validation, seed content for each module, content cases in the red-team suite.
+10. **Parental controls v2:** per-child Whyzy switch, module choice, chat switch (off by default), show-text switch (off by default).
+11. **Card UI and narration:** child card screens adapted from the Figma design, audio-only playback with the avatar, chat shown only when enabled.
 
 **Hand-off notes for Claude Code**
 

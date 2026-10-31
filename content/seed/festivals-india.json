@@ -1,0 +1,46 @@
+{
+  "module": "festivals-india",
+  "version": 1,
+  "items": [
+    {
+      "collection": "festivals",
+      "title": "Diwali, the Festival of Lights",
+      "ageBands": [
+        "4-6",
+        "7-9",
+        "10-12"
+      ],
+      "parts": [
+        "Diwali is called the festival of lights.",
+        "Families clean their homes and light little lamps called diyas.",
+        "People make colourful rangoli patterns and share sweets with neighbours.",
+        "Diwali is a happy time to be together."
+      ],
+      "tags": [
+        "diwali",
+        "lights"
+      ],
+      "source": "seed"
+    },
+    {
+      "collection": "festivals",
+      "title": "Eid",
+      "ageBands": [
+        "4-6",
+        "7-9",
+        "10-12"
+      ],
+      "parts": [
+        "Eid is a happy festival celebrated by Muslim families.",
+        "People wear new clothes and visit family and friends.",
+        "Many families share sweet dishes like sheer khurma.",
+        "Eid Mubarak means happy Eid!"
+      ],
+      "tags": [
+        "eid",
+        "family"
+      ],
+      "source": "seed"
+    }
+  ]
+}

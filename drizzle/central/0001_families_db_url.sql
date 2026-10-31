@@ -1,0 +1,1 @@
+ALTER TABLE `families` ADD `db_url` text DEFAULT '' NOT NULL;

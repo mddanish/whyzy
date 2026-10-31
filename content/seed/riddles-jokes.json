@@ -1,0 +1,42 @@
+{
+  "module": "riddles-jokes",
+  "version": 1,
+  "items": [
+    {
+      "collection": "riddles",
+      "title": "What Has Hands?",
+      "ageBands": [
+        "4-6",
+        "7-9"
+      ],
+      "parts": [
+        "What has hands but cannot clap?",
+        "A clock!",
+        "A clock has hands that point to the time."
+      ],
+      "tags": [
+        "clock",
+        "riddle"
+      ],
+      "source": "seed"
+    },
+    {
+      "collection": "silly-jokes",
+      "title": "The Sleepy Banana",
+      "ageBands": [
+        "4-6",
+        "7-9"
+      ],
+      "parts": [
+        "Why did the banana go to the doctor?",
+        "Because it was not peeling well!",
+        "Peeling sounds like feeling. Silly banana!"
+      ],
+      "tags": [
+        "fruit",
+        "joke"
+      ],
+      "source": "seed"
+    }
+  ]
+}
