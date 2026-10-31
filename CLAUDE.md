@@ -47,7 +47,8 @@ Voice-first, safe AI assistant for children aged 4+. Invite-only pilot.
 - `src/lib/family-db.ts`, `src/lib/family.ts`: create, open and drop family DBs; account deletion.
 - `src/lib/child-mode.ts`: signed child-mode cookie; parent area needs the PIN while it is set.
 - `FAMILY_DB_LOCAL_DIR`: local SQLite family DBs for development and tests only.
-- `src/lib/ai/`: model config (`WHYZY_MODEL`, `WHYZY_STAGE`) and age-band system prompt.
+- `src/lib/ai/`: model config (`WHYZY_PROVIDER` gateway|openrouter, `WHYZY_MODEL`, `WHYZY_STAGE`) and age-band system prompt. All model calls go through `languageModel()`. OpenRouter is test-only; pilot requires AI Gateway.
+- `npm run models:free`: check which free OpenRouter models answer with this key; writes `docs/FREE_MODELS.md`.
 - `src/lib/chat/`: chat service (limits, model call, logging); `src/app/api/chat/route.ts`: child chat API.
 - `src/lib/safety/`: input filter (rules, PII stripping, intent), fixed replies, output moderation.
 - `tests/redteam/cases.json`: versioned red-team set; `tests/redteam.test.ts` runs it in `npm test`, CI and every Vercel build. `npm run redteam:live` runs it against the real model.

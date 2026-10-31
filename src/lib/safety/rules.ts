@@ -61,7 +61,7 @@ export const RULES = {
   },
   violence: {
     en: words([
-      "guns?", "pistols?", "rifles?", "bombs?", "explosives?", "knife", "knives", "swords?", "weapons?",
+      "guns?", "pistols?", "rifles?", "bombs?", "explosives", "explosive devices?", "knife", "knives", "swords?", "weapons?",
       "kill(?:ing|ed|s)?", "murder\\w*", "shoot(?:ing)?", "stab\\w*", "blood(?:y)?", "torture", "terroris\\w+",
       "beat (?:him|her|them|someone) up", "how to (?:hurt|fight|punch) ",
     ]),

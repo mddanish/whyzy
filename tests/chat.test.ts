@@ -28,6 +28,10 @@ describe("model config", () => {
       gateway: { disallowPromptTraining: true, zeroDataRetention: true },
     });
   });
+  it("requires AI Gateway in the pilot (OpenRouter is test only)", () => {
+    expect(() => modelConfig("pilot", "anthropic/claude-haiku-5.5", "openrouter")).toThrow(/AI Gateway/);
+    expect(modelConfig("test", "nvidia/nemotron-3.5-super-vl:free", "openrouter").providerOptions).toEqual({});
+  });
   it("blocks Gemini in every stage", () => {
     expect(() => modelConfig("test", "google/gemini-3-flash")).toThrow();
   });

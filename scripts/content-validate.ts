@@ -12,7 +12,9 @@ async function main() {
   const validator = defaultValidator();
   const drafts = await db.select({ id: items.id }).from(items).where(eq(items.status, "draft"));
   const tally = { published: 0, rejected: 0, skipped: 0, error: 0 };
+  const pause = Number(process.env.VALIDATE_DELAY_MS ?? 0); // free tiers rate-limit
   for (const { id } of drafts) {
+    if (pause) await new Promise((r) => setTimeout(r, pause));
     const r = await validateAndPublish(db, id, validator);
     tally[r.status]++;
     console.log(`${r.status.toUpperCase()} ${id}${r.category ? ` (${r.category})` : ""}`);

@@ -18,12 +18,14 @@
     "content:seed": "tsx --env-file-if-exists=.env.local scripts/content-seed.ts",
     "content:validate": "tsx --env-file-if-exists=.env.local scripts/content-validate.ts",
     "content:generate": "tsx --env-file-if-exists=.env.local scripts/content-generate.ts",
-    "content:narrate": "tsx --env-file-if-exists=.env.local scripts/content-narrate.ts"
+    "content:narrate": "tsx --env-file-if-exists=.env.local scripts/content-narrate.ts",
+    "models:free": "tsx --env-file-if-exists=.env.local scripts/models-free.ts"
   },
   "dependencies": {
     "@ai-sdk/react": "^4.0.163",
     "@auth/drizzle-adapter": "^1.11.3",
     "@libsql/client": "^0.18.0",
+    "@openrouter/ai-sdk-provider": "^3.1.0",
     "ai": "^7.0.159",
     "drizzle-orm": "^0.45.4",
     "next": "16.4.3",

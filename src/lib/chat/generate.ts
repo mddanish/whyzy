@@ -24,7 +24,7 @@ export async function generateReply(
     messages: opts.history,
     output: Output.object({ schema: ReplySchema }),
     providerOptions: ref.providerOptions as never,
-    maxOutputTokens: 400,
+    maxOutputTokens: 1500,
     temperature: 0.5,
     abortSignal: opts.signal,
     // The default handler prints the request body (the child's words). Never log it.
