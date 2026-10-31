@@ -73,6 +73,8 @@ export const families = sqliteTable("families", {
     .unique()
     .references(() => users.id, { onDelete: "cascade" }),
   tursoDbName: text("turso_db_name").notNull().unique(),
+  // libsql:// URL of the family database (file: URL in local development).
+  dbUrl: text("db_url").notNull().default(""),
   createdAt: createdAt(),
 });
 

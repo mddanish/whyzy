@@ -9,14 +9,16 @@
     "lint": "eslint",
     "test": "vitest run",
     "typecheck": "tsc --noEmit",
-    "db:generate": "drizzle-kit generate",
+    "db:generate": "drizzle-kit generate && drizzle-kit generate --config drizzle.family.config.ts",
     "db:migrate": "tsx --env-file-if-exists=.env.local scripts/migrate-central.ts",
     "turso:setup": "tsx --env-file-if-exists=.env.local scripts/turso-setup.ts",
     "keys:create": "tsx --env-file-if-exists=.env.local scripts/create-access-keys.ts"
   },
   "dependencies": {
+    "@ai-sdk/react": "^4.0.163",
     "@auth/drizzle-adapter": "^1.11.3",
     "@libsql/client": "^0.18.0",
+    "ai": "^7.0.159",
     "drizzle-orm": "^0.45.4",
     "next": "16.4.3",
     "next-auth": "^5.0.0-beta.32",

@@ -35,4 +35,9 @@ Voice-first, safe AI assistant for children aged 4+. Invite-only pilot.
 - `src/auth.ts`: Auth.js config. `src/lib/dal.ts`: session check (call inside `<Suspense>`; Cache Components are on).
 - `src/db/central/`: central DB schema and client. `drizzle/central/`: migrations.
 - `src/lib/access-keys.ts`: invite keys and parent registration (one transaction).
-- `src/lib/turso-platform.ts`: Turso Platform API (setup now; family DBs in Phase 2).
+- `src/lib/turso-platform.ts`: Turso Platform API (setup and family DBs).
+- `src/db/family/`: family DB schema. `drizzle/family/`: its migrations, applied when a family DB is opened.
+- `src/lib/family-db.ts`, `src/lib/family.ts`: create, open and drop family DBs; account deletion.
+- `src/lib/child-mode.ts`: signed child-mode cookie; parent area needs the PIN while it is set.
+- `FAMILY_DB_LOCAL_DIR`: local SQLite family DBs for development and tests only.
+- `OPERATOR_TODO.md`: things only the operator can do.

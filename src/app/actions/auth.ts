@@ -5,6 +5,9 @@ import * as z from "zod";
 import { signIn, signOut } from "@/auth";
 import { getCentralDb } from "@/db/central/client";
 import { registerParent } from "@/lib/access-keys";
+import { leaveChildMode } from "@/lib/child-mode";
+import { ensureFamily } from "@/lib/family";
+import { FamilySetupUnavailable } from "@/lib/family-db";
 import { hashPassword } from "@/lib/password";
 
 export type FormState =
@@ -56,6 +59,11 @@ export async function signupAction(
     };
   }
 
+  // Create the family database now. If it fails, the parent area retries.
+  await ensureFamily(getCentralDb(), result.userId).catch((err) => {
+    if (!(err instanceof FamilySetupUnavailable)) console.error("[family] create failed");
+  });
+
   // Throws a redirect to /parent on success.
   await signIn("credentials", { email, password, redirectTo: "/parent" });
 }
@@ -77,5 +85,6 @@ export async function loginAction(
 }
 
 export async function signOutAction(): Promise<void> {
+  await leaveChildMode();
   await signOut({ redirectTo: "/" });
 }

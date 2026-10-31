@@ -1,5 +1,5 @@
 // Minimal client for the Turso Platform API (https://docs.turso.tech/api-reference).
-// Used by setup scripts now and by family-database creation in Phase 2.
+// Used by setup scripts and by family-database creation and deletion.
 
 const API = "https://api.turso.tech/v1";
 
@@ -68,9 +68,16 @@ export async function deleteDatabase(name: string): Promise<void> {
   });
 }
 
-export async function createDatabaseToken(name: string): Promise<string> {
+// True when the Platform API credentials needed for family databases are set.
+export function isPlatformConfigured(): boolean {
+  return Boolean(process.env.TURSO_API_TOKEN && process.env.TURSO_ORG);
+}
+
+// expiration: Turso duration such as "2d"; omit for a non-expiring token.
+export async function createDatabaseToken(name: string, expiration?: string): Promise<string> {
+  const exp = expiration ? `&expiration=${encodeURIComponent(expiration)}` : "";
   const { jwt } = await call<{ jwt: string }>(
-    `/organizations/${org()}/databases/${encodeURIComponent(name)}/auth/tokens?authorization=full-access`,
+    `/organizations/${org()}/databases/${encodeURIComponent(name)}/auth/tokens?authorization=full-access${exp}`,
     { method: "POST" },
   );
   return jwt;

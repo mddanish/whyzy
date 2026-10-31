@@ -1,7 +1,8 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  // Family DB migrations are read from disk at runtime.
+  outputFileTracingIncludes: { "/**": ["./drizzle/family/**/*"] },
   cacheComponents: true,
   partialPrefetching: true,
   turbopack: {
