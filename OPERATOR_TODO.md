@@ -35,3 +35,10 @@ Things only the operator can do. The app runs without them, with the fallback no
 - `AUTH_SECRET`, `CRON_SECRET`, `NEXT_TELEMETRY_DISABLED`, `WHYZY_MODEL`, `WHYZY_STAGE=test` set in Vercel.
 - Vercel project framework set to Next.js; function region `bom1`.
 - Central DB migrated (Mumbai).
+
+## Test data left in the main central DB
+
+Cleanup was blocked by a permission check, so please remove these yourself (all made-up):
+
+- One test parent with an `@example.test` email (`smoke…@example.test`).
+- Several unused test access keys with a 1-day expiry (they expire on 1 Nov 2026 and cannot be used after that).
