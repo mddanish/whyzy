@@ -17,7 +17,8 @@
     "content:migrate": "tsx --env-file-if-exists=.env.local scripts/content-migrate.ts",
     "content:seed": "tsx --env-file-if-exists=.env.local scripts/content-seed.ts",
     "content:validate": "tsx --env-file-if-exists=.env.local scripts/content-validate.ts",
-    "content:generate": "tsx --env-file-if-exists=.env.local scripts/content-generate.ts"
+    "content:generate": "tsx --env-file-if-exists=.env.local scripts/content-generate.ts",
+    "content:narrate": "tsx --env-file-if-exists=.env.local scripts/content-narrate.ts"
   },
   "dependencies": {
     "@ai-sdk/react": "^4.0.163",

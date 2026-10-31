@@ -3,6 +3,7 @@
 //   npm run content:validate
 import { eq } from "drizzle-orm";
 import { getContentDb } from "../src/db/content/client";
+import { narrateAll } from "../src/lib/content/narrate";
 import { items } from "../src/db/content/schema";
 import { defaultValidator, validateAndPublish } from "../src/lib/content/validate";
 
@@ -17,6 +18,9 @@ async function main() {
     console.log(`${r.status.toUpperCase()} ${id}${r.category ? ` (${r.category})` : ""}`);
   }
   console.log(`Done: ${JSON.stringify(tally)}`);
+  // Narration is made once per published item (no-op without ElevenLabs).
+  const narrated = await narrateAll(db);
+  console.log(`Narrated ${narrated.parts} part(s).`);
 }
 
 main().catch((err) => {

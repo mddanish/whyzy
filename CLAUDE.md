@@ -34,6 +34,7 @@ Voice-first, safe AI assistant for children aged 4+. Invite-only pilot.
 - `npm run content:seed`: load `content/seed/*.json` as drafts
 - `npm run content:validate`: check all drafts (rules, then LLM validator) and auto-publish the ones that pass
 - `npm run content:generate -- <module> <collection> <age-band> <count>`: generate, check and publish (operator only)
+- `npm run content:narrate`: make and store narration (ElevenLabs) once for published parts missing it; validate and generate also run it
 
 ## Layout
 
@@ -51,12 +52,13 @@ Voice-first, safe AI assistant for children aged 4+. Invite-only pilot.
 - `src/lib/safety/`: input filter (rules, PII stripping, intent), fixed replies, output moderation.
 - `tests/redteam/cases.json`: versioned red-team set; `tests/redteam.test.ts` runs it in `npm test`, CI and every Vercel build. `npm run redteam:live` runs it against the real model.
 - `src/lib/voice/`: on-device push-to-talk (`processLocally = true`, no cloud fallback), ElevenLabs TTS; `src/app/api/tts/route.ts` speaks only server-signed replies.
-- `src/app/child/`: child mode (avatar, push-to-talk, wind-down); `src/lib/avatar.ts`: avatar states and sprite manifest; `src/lib/pets.ts`: approved pets.
+- `src/app/child/`: child mode. `child-app.tsx` (home of module cards, module shelves, player, chat, pet picker, wind-down), `cards.tsx` (card styles adapted from the Figma "Storytelling App Design for Kids"; theme in `globals.css` `.wz-*`), `player.tsx` (stored narration, device voice fallback), `chat-view.tsx`. Audio-only mode shows no text; `src/lib/avatar.ts`: avatar states and sprite manifest; `src/lib/pets.ts`: approved pets.
 - `src/db/content/`: content DB schema and client (`CONTENT_DB_URL`/`CONTENT_DB_TOKEN`); `drizzle/content/`: its migrations (`npm run content:migrate` also syncs modules).
 - `src/lib/content/`: module list and library (drafts, status changes, published-only reads); `src/app/api/content/route.ts`: child library API.
 - `content/modules/<module>/AGENT.md` + `SKILL.md`, `content/validator/AGENT.md`: versioned agent files (front matter `version`). Bump the version when you change one.
 - `content/seed/`: hand-written seed items (plus traditional public-domain rhymes).
 - `src/lib/content/generate.ts` (`CONTENT_MODEL`), `validate.ts` (`CONTENT_VALIDATOR_MODEL`): pipeline. Validator errors leave items as drafts; failed checks reject them.
+- `src/lib/content/narrate.ts` + `src/app/api/content/audio/route.ts`: narration stored in the content DB (`item_audio`), served only for published, allowed cards.
 - `tests/redteam/content-cases.json`: unsafe content that must never publish.
 - `src/lib/controls.ts`: per-child parent controls (Whyzy on/off, allowed modules, chat, show text); enforced in `/api/chat`, `/api/content` and the child page. Defaults: Whyzy off, chat off, audio only.
 - `src/lib/retention.ts` + `src/app/api/cron/retention/route.ts`: daily retention job (Vercel Cron, `CRON_SECRET`).

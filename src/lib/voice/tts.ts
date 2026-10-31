@@ -1,6 +1,6 @@
-import "server-only";
 
-// ElevenLabs text to speech, called from the server only (SPEC.md, Voice).
+// ElevenLabs text to speech, called from the server or operator scripts only
+// (SPEC.md, Voice); never from the browser.
 // Only the moderated reply text is sent, with names and details removed.
 // Training opt-out must be on in the ElevenLabs account (OPERATOR_TODO.md).
 export function ttsConfigured(): boolean {

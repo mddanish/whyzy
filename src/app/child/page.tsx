@@ -6,7 +6,7 @@ import { TIME_UP } from "@/lib/chat/service";
 import { usedSeconds } from "@/lib/chat/usage";
 import { getChildContext } from "@/lib/dal";
 import { sign } from "@/lib/sign";
-import { ChildApp } from "./chat";
+import { ChildApp } from "./child-app";
 
 export default function ChildPage() {
   return (

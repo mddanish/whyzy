@@ -2,6 +2,7 @@
 //   npm run content:generate -- <module> <collection> <age-band> <count>
 // New items are stored as drafts, checked, and published if they pass.
 import { getContentDb } from "../src/db/content/client";
+import { narrateAll } from "../src/lib/content/narrate";
 import { AGE_BANDS, type AgeBand } from "../src/db/family/schema";
 import { generateDrafts } from "../src/lib/content/generate";
 import { defaultValidator, validateAndPublish } from "../src/lib/content/validate";
@@ -20,6 +21,9 @@ async function main() {
     const r = await validateAndPublish(db, id, validator);
     console.log(`${r.status.toUpperCase()} ${id}${r.category ? ` (${r.category})` : ""}`);
   }
+  // Narration is made once per published item (no-op without ElevenLabs).
+  const narrated = await narrateAll(db);
+  console.log(`Narrated ${narrated.parts} part(s).`);
 }
 
 main().catch((err) => {

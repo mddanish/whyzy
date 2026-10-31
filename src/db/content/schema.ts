@@ -1,4 +1,4 @@
-import { index, integer, primaryKey, sqliteTable, text, uniqueIndex } from "drizzle-orm/sqlite-core";
+import { blob, index, integer, primaryKey, sqliteTable, text, uniqueIndex } from "drizzle-orm/sqlite-core";
 import type { AgeBand } from "@/db/family/schema";
 
 // Content database: the shared card library (no child data), in Mumbai.
@@ -86,6 +86,25 @@ export const itemParts = sqliteTable(
       .references(() => items.id, { onDelete: "cascade" }),
     idx: integer("idx").notNull(),
     text: text("text").notNull(),
+  },
+  (t) => [primaryKey({ columns: [t.itemId, t.idx] })],
+);
+
+// Narration audio, made once per published item part (operator decision)
+// and stored next to the content in Mumbai. This is narration of library
+// content only; a child's audio is never recorded or stored.
+export const itemAudio = sqliteTable(
+  "item_audio",
+  {
+    itemId: text("item_id")
+      .notNull()
+      .references(() => items.id, { onDelete: "cascade" }),
+    idx: integer("idx").notNull(),
+    mime: text("mime").notNull(),
+    audio: blob("audio", { mode: "buffer" }).notNull(),
+    voice: text("voice").notNull(),
+    textHash: text("text_hash").notNull(),
+    createdAt: createdAt(),
   },
   (t) => [primaryKey({ columns: [t.itemId, t.idx] })],
 );

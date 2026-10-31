@@ -168,3 +168,13 @@ export function speakLocally(text: string, onEnd: () => void) {
   window.speechSynthesis.cancel();
   window.speechSynthesis.speak(u);
 }
+
+// True when this device has an on-device English voice for speakLocally.
+export function hasLocalVoice(): boolean {
+  if (typeof window === "undefined" || !("speechSynthesis" in window)) return false;
+  return window.speechSynthesis.getVoices().some((v) => v.localService && v.lang.startsWith("en"));
+}
+
+export function stopSpeaking() {
+  if (typeof window !== "undefined" && "speechSynthesis" in window) window.speechSynthesis.cancel();
+}

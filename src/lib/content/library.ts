@@ -158,3 +158,27 @@ export async function getItem(db: ContentDb, id: string, band: AgeBand, allowed?
     .orderBy(asc(itemParts.idx));
   return { ...item, parts: parts.map((p) => p.text) };
 }
+
+// A module page: its collections (shelves), each with its visible items.
+export async function listShelves(db: ContentDb, moduleId: string, band: AgeBand, allowed?: string[]) {
+  if (allowed && !allowed.includes(moduleId)) return [];
+  const rows = await db
+    .select({
+      collectionId: collections.id,
+      collectionTitle: collections.title,
+      id: items.id,
+      title: items.title,
+      tags: items.tags,
+    })
+    .from(items)
+    .innerJoin(collections, eq(collections.id, items.collectionId))
+    .where(and(eq(items.moduleId, moduleId), visible(band)))
+    .orderBy(asc(collections.sortOrder), asc(collections.title), asc(items.publishedAt));
+  const shelves = new Map<string, { id: string; title: string; items: { id: string; title: string; tags: string[] }[] }>();
+  for (const r of rows) {
+    const shelf = shelves.get(r.collectionId) ?? { id: r.collectionId, title: r.collectionTitle, items: [] };
+    shelf.items.push({ id: r.id, title: r.title, tags: r.tags });
+    shelves.set(r.collectionId, shelf);
+  }
+  return [...shelves.values()];
+}
