@@ -1,0 +1,43 @@
+{
+  "module": "numbers-letters",
+  "version": 1,
+  "items": [
+    {
+      "collection": "counting",
+      "title": "Counting Mangoes",
+      "ageBands": [
+        "4-6",
+        "7-9"
+      ],
+      "parts": [
+        "Let's count mangoes!",
+        "One mango, two mangoes, three mangoes in a basket.",
+        "Add one more. Now there are four mangoes!",
+        "You counted to four. Well done!"
+      ],
+      "tags": [
+        "counting",
+        "fruit"
+      ],
+      "source": "seed"
+    },
+    {
+      "collection": "alphabet",
+      "title": "A, B, C Animals",
+      "ageBands": [
+        "4-6",
+        "7-9"
+      ],
+      "parts": [
+        "A is for ant, small and strong.",
+        "B is for bear, who naps all day long.",
+        "C is for cat, who likes to purr. Which letter comes next?"
+      ],
+      "tags": [
+        "letters",
+        "animals"
+      ],
+      "source": "seed"
+    }
+  ]
+}

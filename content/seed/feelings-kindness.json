@@ -1,0 +1,44 @@
+{
+  "module": "feelings-kindness",
+  "version": 1,
+  "items": [
+    {
+      "collection": "naming-feelings",
+      "title": "Feeling Angry",
+      "ageBands": [
+        "4-6",
+        "7-9",
+        "10-12"
+      ],
+      "parts": [
+        "Sometimes we feel angry.",
+        "Your face may feel hot, and your hands may want to squeeze.",
+        "You can take three slow breaths and squeeze a soft pillow.",
+        "You can always talk to a grown-up you trust about how you feel."
+      ],
+      "tags": [
+        "anger",
+        "calm"
+      ],
+      "source": "seed"
+    },
+    {
+      "collection": "being-kind",
+      "title": "Saying Thank You",
+      "ageBands": [
+        "4-6",
+        "7-9"
+      ],
+      "parts": [
+        "Saying thank you is a kind thing to do.",
+        "It makes the other person feel happy and seen.",
+        "Today, say thank you to someone who helps you.",
+        "You can always talk to a grown-up you trust about kind ideas too."
+      ],
+      "tags": [
+        "gratitude"
+      ],
+      "source": "seed"
+    }
+  ]
+}

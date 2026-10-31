@@ -8,11 +8,14 @@ import { MODULES } from "./modules";
 // ---- Library sync (operator) ----
 
 export async function syncModules(db: ContentDb): Promise<void> {
-  for (const [i, m] of MODULES.entries()) {
+  for (const [i, { collections: cols, ...m }] of MODULES.entries()) {
     await db
       .insert(modules)
       .values({ ...m, sortOrder: i })
       .onConflictDoUpdate({ target: modules.id, set: { title: m.title, description: m.description, emoji: m.emoji, sortOrder: i } });
+    for (const [j, c] of cols.entries()) {
+      await ensureCollection(db, { moduleId: m.id, slug: c.slug, title: c.title, sortOrder: j });
+    }
   }
 }
 

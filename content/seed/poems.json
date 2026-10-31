@@ -1,0 +1,41 @@
+{
+  "module": "poems",
+  "version": 1,
+  "items": [
+    {
+      "collection": "nature-poems",
+      "title": "The Mango Tree",
+      "ageBands": [
+        "4-6",
+        "7-9",
+        "10-12"
+      ],
+      "parts": [
+        "The mango tree is tall and wide,\nWith birds that sing on every side.",
+        "Its leaves are green, its fruit is gold,\nIt gives us shade when sun is bold."
+      ],
+      "tags": [
+        "trees",
+        "summer"
+      ],
+      "source": "seed"
+    },
+    {
+      "collection": "animal-poems",
+      "title": "Little Snail",
+      "ageBands": [
+        "4-6",
+        "7-9"
+      ],
+      "parts": [
+        "Little snail, so slow, so small,\nCarries home, and that is all.",
+        "Slide along the garden wall,\nYou never hurry, not at all."
+      ],
+      "tags": [
+        "snail",
+        "garden"
+      ],
+      "source": "seed"
+    }
+  ]
+}

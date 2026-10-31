@@ -51,3 +51,30 @@ export function mockModel(answer: string | (() => string)) {
 }
 
 export const json = (text: string, picture = "") => JSON.stringify({ text, picture });
+
+// A fake model for generateText calls (content generator and validator).
+export function mockGenerateModel(answer: string | (() => string)) {
+  const calls: unknown[] = [];
+  const model = new MockLanguageModelV4({
+    doGenerate: async (options) => {
+      calls.push(options);
+      const text = typeof answer === "function" ? answer() : answer;
+      return { content: [{ type: "text", text }], finishReason: { unified: "stop", raw: undefined }, usage, warnings: [] };
+    },
+  });
+  return { model, calls };
+}
+
+export async function tempContentDb() {
+  const { mkdtempSync: mk, rmSync: rm } = await import("node:fs");
+  const { createClient: cc } = await import("@libsql/client");
+  const { drizzle: dz } = await import("drizzle-orm/libsql");
+  const { migrate } = await import("drizzle-orm/libsql/migrator");
+  const schema = await import("@/db/content/schema");
+  const { syncModules } = await import("@/lib/content/library");
+  const dir = mk(join(tmpdir(), "whyzy-content-"));
+  const db = dz(cc({ url: `file:${join(dir, "content.db")}` }), { schema });
+  await migrate(db, { migrationsFolder: "drizzle/content" });
+  await syncModules(db);
+  return { db, cleanup: () => { (db as unknown as { $client: { close(): void } }).$client.close(); rm(dir, { recursive: true, force: true }); } };
+}

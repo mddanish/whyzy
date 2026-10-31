@@ -1,0 +1,45 @@
+{
+  "module": "calm-bedtime",
+  "version": 1,
+  "items": [
+    {
+      "collection": "breathing",
+      "title": "Balloon Breathing",
+      "ageBands": [
+        "4-6",
+        "7-9",
+        "10-12"
+      ],
+      "parts": [
+        "Let's do balloon breathing.",
+        "Breathe in slowly through your nose. One, two, three. Your tummy fills up like a balloon.",
+        "Breathe out slowly. One, two, three, four. The balloon gets smaller.",
+        "Let's do it two more times. Nice and slow."
+      ],
+      "tags": [
+        "breathing",
+        "calm"
+      ],
+      "source": "seed"
+    },
+    {
+      "collection": "sleepy-stories",
+      "title": "The Sleepy Moon",
+      "ageBands": [
+        "4-6",
+        "7-9"
+      ],
+      "parts": [
+        "The moon yawned a big, soft yawn.",
+        "The stars blinked slowly, one by one.",
+        "The owl tucked her head under her wing.",
+        "Everything was quiet and calm. Goodnight, moon. Goodnight, stars."
+      ],
+      "tags": [
+        "night",
+        "sleep"
+      ],
+      "source": "seed"
+    }
+  ]
+}

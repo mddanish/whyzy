@@ -11,7 +11,8 @@ const createdAt = () =>
 
 export const ITEM_STATUSES = ["draft", "validated", "published", "rejected", "unpublished"] as const;
 export type ItemStatus = (typeof ITEM_STATUSES)[number];
-export const ITEM_SOURCES = ["generated", "traditional"] as const;
+// generated: by a module agent; seed: hand-written in content/seed; traditional: public-domain rhyme.
+export const ITEM_SOURCES = ["generated", "seed", "traditional"] as const;
 export type ItemSource = (typeof ITEM_SOURCES)[number];
 
 export const modules = sqliteTable("modules", {

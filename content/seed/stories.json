@@ -1,0 +1,44 @@
+{
+  "module": "stories",
+  "version": 1,
+  "items": [
+    {
+      "collection": "animal-stories",
+      "title": "Ellie and the Red Ball",
+      "ageBands": [
+        "4-6",
+        "7-9"
+      ],
+      "parts": [
+        "Ellie the little elephant found a red ball by the river.",
+        "She rolled it to Monkey. Monkey rolled it back.",
+        "Soon all the animals were playing together. Ellie smiled a big elephant smile."
+      ],
+      "tags": [
+        "sharing",
+        "animals"
+      ],
+      "source": "seed"
+    },
+    {
+      "collection": "adventure-stories",
+      "title": "The Paper Boat",
+      "ageBands": [
+        "4-6",
+        "7-9",
+        "10-12"
+      ],
+      "parts": [
+        "Aarav folded a paper boat on a rainy morning.",
+        "With his grandmother, he set it on a puddle near the door. It bobbed and spun.",
+        "A leaf floated next to it like a tiny friend. The two drifted side by side.",
+        "When the rain stopped, the boat rested on the grass, ready for the next rainy day."
+      ],
+      "tags": [
+        "rain",
+        "play"
+      ],
+      "source": "seed"
+    }
+  ]
+}

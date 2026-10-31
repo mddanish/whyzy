@@ -30,7 +30,10 @@ Voice-first, safe AI assistant for children aged 4+. Invite-only pilot.
 - `npm run db:generate`: create a migration after editing `src/db/central/schema.ts`
 - `npm run db:migrate`: apply migrations to the central DB
 - `npm run keys:create -- <count> <days>`: create pilot access keys (printed once)
-- `npm run content:migrate`: apply content DB migrations and sync the module list
+- `npm run content:migrate`: apply content DB migrations and sync modules and collections
+- `npm run content:seed`: load `content/seed/*.json` as drafts
+- `npm run content:validate`: check all drafts (rules, then LLM validator) and auto-publish the ones that pass
+- `npm run content:generate -- <module> <collection> <age-band> <count>`: generate, check and publish (operator only)
 
 ## Layout
 
@@ -51,6 +54,10 @@ Voice-first, safe AI assistant for children aged 4+. Invite-only pilot.
 - `src/app/child/`: child mode (avatar, push-to-talk, wind-down); `src/lib/avatar.ts`: avatar states and sprite manifest; `src/lib/pets.ts`: approved pets.
 - `src/db/content/`: content DB schema and client (`CONTENT_DB_URL`/`CONTENT_DB_TOKEN`); `drizzle/content/`: its migrations (`npm run content:migrate` also syncs modules).
 - `src/lib/content/`: module list and library (drafts, status changes, published-only reads); `src/app/api/content/route.ts`: child library API.
+- `content/modules/<module>/AGENT.md` + `SKILL.md`, `content/validator/AGENT.md`: versioned agent files (front matter `version`). Bump the version when you change one.
+- `content/seed/`: hand-written seed items (plus traditional public-domain rhymes).
+- `src/lib/content/generate.ts` (`CONTENT_MODEL`), `validate.ts` (`CONTENT_VALIDATOR_MODEL`): pipeline. Validator errors leave items as drafts; failed checks reject them.
+- `tests/redteam/content-cases.json`: unsafe content that must never publish.
 - `src/lib/retention.ts` + `src/app/api/cron/retention/route.ts`: daily retention job (Vercel Cron, `CRON_SECRET`).
 - `docs/DATA_HYGIENE.md`: data hygiene checklist status.
 - `OPERATOR_TODO.md`: things only the operator can do.

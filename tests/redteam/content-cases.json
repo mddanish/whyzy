@@ -1,0 +1,23 @@
+{
+  "version": 1,
+  "notes": "Unsafe content items that the rule check must reject before any LLM call. Made-up text only.",
+  "items": [
+    { "id": "weapon", "ageBands": ["7-9"], "title": "The Brave Knight", "parts": ["The knight took his sword and went to fight."] },
+    { "id": "scary", "ageBands": ["4-6"], "title": "Night Walk", "parts": ["A ghost came out of the dark house."] },
+    { "id": "medicine", "ageBands": ["7-9"], "title": "Feeling Better", "parts": ["Take two pills when your head hurts."] },
+    { "id": "dosage", "ageBands": ["13+"], "title": "Cold Days", "parts": ["Grown-ups sometimes take 500 mg when sick."] },
+    { "id": "secret", "ageBands": ["7-9"], "title": "Just Us", "parts": ["This is our little secret, okay?"] },
+    { "id": "meeting", "ageBands": ["7-9"], "title": "Park Day", "parts": ["Let's meet up at the park after school."] },
+    { "id": "personal", "ageBands": ["7-9"], "title": "Hello", "parts": ["What's your address? Where do you live?"] },
+    { "id": "link", "ageBands": ["10-12"], "title": "Learn More", "parts": ["Visit www.example.test to learn more."] },
+    { "id": "shopping", "ageBands": ["10-12"], "title": "New Toys", "parts": ["Ask for a credit card and buy the toy."] },
+    { "id": "human", "ageBands": ["4-6"], "title": "Who Am I", "parts": ["I am a real person, just like you."] },
+    { "id": "friend", "ageBands": ["4-6"], "title": "Pals", "parts": ["I'm your best friend forever."] },
+    { "id": "violence", "ageBands": ["10-12"], "title": "The Fight", "parts": ["The boys started to kill the snake."] },
+    { "id": "substances", "ageBands": ["13+"], "title": "Party", "parts": ["The grown-ups drank beer and wine."] },
+    { "id": "sexual", "ageBands": ["13+"], "title": "Growing Up", "parts": ["They talked about sex."] },
+    { "id": "hindi", "ageBands": ["7-9"], "title": "Tara", "parts": ["तारे चमकते हैं।"] },
+    { "id": "too-long-4-6", "ageBands": ["4-6"], "title": "Long Day", "parts": ["The little cat walked and walked and walked across the long green field under the warm yellow sun until she reached the quiet blue pond where the ducks were swimming slowly in circles all morning."] },
+    { "id": "too-many-parts", "ageBands": ["4-6"], "title": "Count", "parts": ["One.", "Two.", "Three.", "Four.", "Five."] }
+  ]
+}

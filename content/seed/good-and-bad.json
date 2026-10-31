@@ -1,0 +1,44 @@
+{
+  "module": "good-and-bad",
+  "version": 1,
+  "items": [
+    {
+      "collection": "good-habits",
+      "title": "Washing Hands",
+      "ageBands": [
+        "4-6",
+        "7-9"
+      ],
+      "parts": [
+        "Washing hands is a good habit.",
+        "Use soap and water before you eat. Rub, rub, rub!",
+        "Eating with dirty hands is not a good idea. Germs can make tummies upset.",
+        "Clean hands, happy you!"
+      ],
+      "tags": [
+        "hygiene"
+      ],
+      "source": "seed"
+    },
+    {
+      "collection": "kind-choices",
+      "title": "Waiting Your Turn",
+      "ageBands": [
+        "4-6",
+        "7-9",
+        "10-12"
+      ],
+      "parts": [
+        "Waiting your turn is a kind choice.",
+        "When friends play on the swing, you can count to ten while you wait.",
+        "Pushing to go first is not kind. It can make others feel sad.",
+        "Waiting is hard, but you can do it. Everyone gets a turn!"
+      ],
+      "tags": [
+        "patience",
+        "play"
+      ],
+      "source": "seed"
+    }
+  ]
+}
