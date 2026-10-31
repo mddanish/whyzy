@@ -86,6 +86,7 @@ async function ParentHome() {
       <Link href="/parent/children/new" className={`${buttonClass} block text-center`}>Add a child</Link>
       <nav className="mt-8 flex flex-wrap gap-3 text-sm">
         <Link href="/parent/alerts" className={secondaryButtonClass}>Safety alerts{unseen.length > 0 ? ` (${unseen.length})` : ""}</Link>
+        <Link href="/parent/logs" className={secondaryButtonClass}>Chat logs</Link>
         <Link href="/parent/settings" className={secondaryButtonClass}>Settings and PIN</Link>
         <Link href="/parent/account" className={secondaryButtonClass}>Delete account</Link>
       </nav>

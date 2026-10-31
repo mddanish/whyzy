@@ -14,3 +14,22 @@ Things only the operator can do. The app runs without them, with the fallback no
 | 6 | ElevenLabs: recheck terms (they bar under-18 users), turn on the training opt-out (Terms and Privacy > Data use), then set `ELEVENLABS_API_KEY` and `ELEVENLABS_VOICE_ID` in Vercel. Or decide to stay on the fallback. | Server-side TTS (FR-23). | Replies are spoken by the browser's on-device voice (local voices only); if the device has none, text only. |
 | 7 | Test on-device speech on the children's real devices (Chrome 139+ desktop), especially Hindi. | `processLocally` support is limited and Hindi is unverified (REQUIREMENTS open questions 1–2). | The child can type; the app never falls back to cloud speech recognition. |
 | 8 | Confirm each chosen Petdex pet's licence, or get written permission from Crafter Station. The petdex README says assets belong to their submitters under whatever licence each declares; per-pet licences could not be confirmed from here. Then add sprites as described in `public/pets/README.md`. | FR-24. | Each pet is drawn by the app's own built-in avatar (pet colour + emoji, animated per state). |
+
+## Before the pilot opens
+
+| # | What |
+|---|------|
+| 9 | Choose the pilot model (SPEC default candidate: Claude via AI Gateway, e.g. `anthropic/claude-haiku-5.5`). Run `npm run redteam:live` with it; all cases must pass. |
+| 10 | In Vercel set `WHYZY_MODEL=<pilot model>` and `WHYZY_STAGE=pilot`, then redeploy. Pilot stage refuses free models and forces `disallowPromptTraining` and `zeroDataRetention` (ZDR needs a Vercel Pro or Enterprise team). |
+| 11 | Set a monthly AI Gateway budget cap. |
+| 12 | Draft the parent consent form and privacy notice; collect written consent from each family. The in-app consent screen only records that the parent says they signed it. |
+| 13 | Manual red-team round with no open findings (REQUIREMENTS pilot gate). |
+| 14 | Password reset email: share SMTP details (FR-02a). Until then a parent who forgets the password needs the operator. |
+| 15 | Name clearance: domain, app-store name, IP India trademark search. |
+| 16 | Parent survey tool and targets (FR-30). |
+
+## Already done by Claude
+
+- `AUTH_SECRET`, `CRON_SECRET`, `NEXT_TELEMETRY_DISABLED`, `WHYZY_MODEL`, `WHYZY_STAGE=test` set in Vercel.
+- Vercel project framework set to Next.js; function region `bom1`.
+- Central DB migrated (Mumbai).

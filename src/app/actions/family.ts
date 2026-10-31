@@ -11,6 +11,7 @@ import { enterChildMode, getChildModeId, leaveChildMode } from "@/lib/child-mode
 import { getCurrentParent, getFamilySettings, requireFamily } from "@/lib/dal";
 import { deleteParentAccount, ensureFamily, familyDb } from "@/lib/family";
 import { hashPassword, verifyPassword } from "@/lib/password";
+import { deleteAllLogs } from "@/lib/retention";
 import { PET_SLUGS } from "@/lib/pets";
 
 export type ActionState = { message?: string; ok?: boolean } | undefined;
@@ -54,11 +55,10 @@ export async function saveSettingsAction(_prev: ActionState, formData: FormData)
   const { db } = await requireFamily();
   const parsed = SettingsSchema.safeParse(Object.fromEntries(formData));
   if (!parsed.success) return { message: parsed.error.issues[0].message };
-  await db
-    .update(settings)
-    .set({ loggingEnabled: parsed.data.loggingEnabled === "on", retentionDays: parsed.data.retentionDays })
-    .where(eq(settings.id, 1));
-  return { ok: true, message: "Saved." };
+  const loggingEnabled = parsed.data.loggingEnabled === "on";
+  await db.update(settings).set({ loggingEnabled, retentionDays: parsed.data.retentionDays }).where(eq(settings.id, 1));
+  if (!loggingEnabled) await deleteAllLogs(db); // off means nothing is kept
+  return { ok: true, message: loggingEnabled ? "Saved." : "Saved. Logging is off and saved chats were deleted." };
 }
 
 async function checkAccountPassword(parentId: string, password: string): Promise<boolean> {
@@ -160,4 +160,10 @@ export async function markAlertsSeenAction(): Promise<void> {
   const { db } = await requireFamily();
   await db.update(safetyEvents).set({ seenAt: new Date() }).where(isNull(safetyEvents.seenAt));
   redirect("/parent/alerts");
+}
+
+export async function deleteLogsAction(): Promise<void> {
+  const { db } = await requireFamily();
+  await deleteAllLogs(db);
+  redirect("/parent/logs");
 }
