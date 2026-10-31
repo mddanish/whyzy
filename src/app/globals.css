@@ -24,3 +24,21 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+/* Child-mode avatar animations */
+.wz-avatar { transition: filter 0.4s; }
+.wz-idle { animation: wz-bob 3s ease-in-out infinite; }
+.wz-listening { animation: wz-bob 1.2s ease-in-out infinite; }
+.wz-thinking { animation: wz-tilt 1.6s ease-in-out infinite; }
+.wz-speaking { animation: wz-talk 0.35s ease-in-out infinite alternate; }
+.wz-happy { animation: wz-jump 0.6s ease-out 3; }
+.wz-winddown { filter: saturate(0.4) brightness(0.9); animation: wz-bob 5s ease-in-out infinite; }
+.wz-ring { border: 6px solid; animation: wz-pulse 1s ease-out infinite; }
+@keyframes wz-bob { 50% { transform: translateY(-6px); } }
+@keyframes wz-tilt { 25% { transform: rotate(-6deg); } 75% { transform: rotate(6deg); } }
+@keyframes wz-talk { to { transform: scale(1.06); } }
+@keyframes wz-jump { 40% { transform: translateY(-24px); } }
+@keyframes wz-pulse { from { opacity: 0.8; transform: scale(1); } to { opacity: 0; transform: scale(1.25); } }
+@media (prefers-reduced-motion: reduce) {
+  .wz-avatar, .wz-ring { animation: none !important; }
+}

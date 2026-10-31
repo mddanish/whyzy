@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from "react";
 
 // On-device speech recognition (Web Speech API with processLocally = true).
 // The child's voice never leaves the device: if on-device recognition is not
@@ -40,29 +40,60 @@ function ctor(): RecognitionCtor | null {
   return C;
 }
 
+// The parent checks voice on the child's device (FR-21); the result is kept
+// on this device so child mode does not probe the speech engine itself.
+const verifiedKey = (lang: string) => `wz-voice-${lang}`;
+
+function remember(lang: string, status: SpeechSupport) {
+  try {
+    if (status === "available") localStorage.setItem(verifiedKey(lang), "available");
+    else localStorage.removeItem(verifiedKey(lang));
+  } catch {}
+}
+
 export async function checkOnDevice(lang: string): Promise<SpeechSupport> {
   const C = ctor();
-  if (!C) return "unsupported";
-  try {
-    return await C.available!({ langs: [lang], processLocally: true });
-  } catch {
-    return "unavailable";
+  let status: SpeechSupport = "unsupported";
+  if (C) {
+    try {
+      status = await C.available!({ langs: [lang], processLocally: true });
+    } catch {
+      status = "unavailable";
+    }
   }
+  remember(lang, status);
+  return status;
 }
 
 export async function installOnDevice(lang: string): Promise<boolean> {
   const C = ctor();
   if (!C?.install) return false;
   try {
-    return await C.install({ langs: [lang], processLocally: true });
+    const ok = await C.install({ langs: [lang], processLocally: true });
+    if (ok) remember(lang, "available");
+    return ok;
   } catch {
     return false;
   }
 }
 
+function verifiedOnThisDevice(lang: string): SpeechSupport {
+  try {
+    return ctor() && localStorage.getItem(verifiedKey(lang)) === "available" ? "available" : "unavailable";
+  } catch {
+    return "unavailable";
+  }
+}
+
+const noSubscribe = () => () => {};
+
 // Push to talk: start() while the button is held, stop() on release.
 export function usePushToTalk(lang: string, onText: (text: string) => void) {
-  const [support, setSupport] = useState<SpeechSupport | "checking">("checking");
+  const support = useSyncExternalStore<SpeechSupport | "checking">(
+    noSubscribe,
+    () => verifiedOnThisDevice(lang),
+    () => "checking",
+  );
   const [listening, setListening] = useState(false);
   const rec = useRef<Recognition | null>(null);
   const text = useRef("");
@@ -71,14 +102,7 @@ export function usePushToTalk(lang: string, onText: (text: string) => void) {
     onTextRef.current = onText;
   }, [onText]);
 
-  useEffect(() => {
-    let live = true;
-    checkOnDevice(lang).then((s) => live && setSupport(s));
-    return () => {
-      live = false;
-      rec.current?.abort();
-    };
-  }, [lang]);
+  useEffect(() => () => rec.current?.abort(), []);
 
   const start = useCallback(() => {
     const C = ctor();
@@ -94,7 +118,7 @@ export function usePushToTalk(lang: string, onText: (text: string) => void) {
         if (e.results[i].isFinal) text.current += ` ${e.results[i][0].transcript}`;
       }
     };
-    r.onerror = () => {};
+    r.onerror = () => {}; // never retry with a cloud service
     r.onend = () => {
       rec.current = null;
       setListening(false);

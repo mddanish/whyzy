@@ -1,27 +1,34 @@
 import { Suspense } from "react";
-import Link from "next/link";
 import { redirect } from "next/navigation";
-import { Card, Loading } from "@/app/ui";
+import { INTRO_LINE } from "@/lib/ai/prompt";
+import { TIME_UP } from "@/lib/chat/service";
+import { usedSeconds } from "@/lib/chat/usage";
 import { getChildContext } from "@/lib/dal";
-import { Chat } from "./chat";
+import { sign } from "@/lib/sign";
+import { ChildApp } from "./chat";
 
 export default function ChildPage() {
   return (
-    <Card title="Whyzy">
-      <Suspense fallback={<Loading />}>
-        <Child />
-      </Suspense>
-    </Card>
+    <Suspense fallback={<main className="flex min-h-dvh items-center justify-center bg-sky-100 text-2xl">✨</main>}>
+      <Child />
+    </Suspense>
   );
 }
 
+// Child mode: no settings, no links out, no account details.
 async function Child() {
   const ctx = await getChildContext();
   if (!ctx) redirect("/parent");
+  const { child } = ctx;
+  const purpose = `tts:${child.id}`;
   return (
-    <>
-      <Chat name={ctx.child.displayName} language={ctx.child.inputLanguage} />
-      <Link href="/unlock" className="mt-6 block text-sm underline">Grown-ups</Link>
-    </>
+    <ChildApp
+      name={child.displayName}
+      language={child.inputLanguage}
+      pet={child.avatarPet}
+      remainingSeconds={child.dailyMinutes * 60 - (await usedSeconds(ctx.db, child.id))}
+      intro={{ text: INTRO_LINE, sig: sign(INTRO_LINE, purpose) }}
+      windDown={{ text: TIME_UP, sig: sign(TIME_UP, purpose) }}
+    />
   );
 }

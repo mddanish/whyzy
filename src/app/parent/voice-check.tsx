@@ -9,6 +9,7 @@ const MESSAGES: Record<string, string> = {
   downloadable: "The speech model needs a one-time download.",
   downloading: "Downloading the speech model…",
   unavailable: "On-device speech for this language is not available on this device. Your child can type instead.",
+  // Checking also saves the result on this device, so child mode knows talking works here.
   unsupported: "This browser cannot recognise speech on the device. Use Chrome 139 or newer on a desktop. Your child can type instead.",
 };
 
