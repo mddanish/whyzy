@@ -9,7 +9,7 @@
 
 ## 1. Project Overview
 
-Whyzy is a voice-first, safe AI assistant for children aged 4 and up. Children may speak English or Hindi; Whyzy always replies in English. It runs on Vercel and the AI SDK, with data in Mumbai and speech recognition on the device. It is built first as a closed test, then as an invite-only pilot of up to 20 families within 3 months.
+Whyzy is a voice-first, safe AI companion for children aged 4 and up. Its main experience is a library of pre-written, safety-checked content cards that children listen to; free chat is optional and parent-controlled. Children may speak English or Hindi; Whyzy always replies in English. It runs on Vercel and the AI SDK, with data in Mumbai and speech recognition on the device. It is built first as a closed test, then as an invite-only pilot of up to 20 families within 3 months.
 
 ## 2. Goals & Success Criteria
 
@@ -90,6 +90,20 @@ Whyzy is a voice-first, safe AI assistant for children aged 4 and up. Children m
 **Feedback**
 - FR-30: Parent survey covering satisfaction and child engagement, run during and at the end of the pilot.
 
+**Content cards and modules (v2)**
+- FR-60: The main child experience is a card library: module → collection → content card (with optional parts).
+- FR-61: Modules include Stories, Poems, Nursery rhymes, and Good things and bad things; further modules are added from the proposed list in SPEC.md once the operator accepts them.
+- FR-62: Content lives in a separate `content` Turso database in Mumbai. Children only receive items with status `published`.
+- FR-63: Each module has a versioned `AGENT.md` and `SKILL.md` used to generate its content; a shared validator agent checks safety.
+- FR-64: Content generation is operator-only, in batches. Nothing is generated while a child uses the app.
+- FR-65: Every new item passes rule-based moderation and a separate LLM safety validation before it can be published; failures are stored as `rejected` with the reason.
+- FR-66: Each item stores its generation metadata (module, agent and skill versions, model, date, validator verdict).
+- FR-67: Published content can be unpublished at once.
+- FR-68: Per child, the parent controls: Whyzy on or off (master switch), which modules are allowed, chat on or off (default off), and show text on or off (default off, so audio only).
+- FR-69: The child sees only what the parent turned on.
+- FR-70: Tapping a content card plays it as audio with the avatar; text shows only if enabled.
+- FR-71: Child card screens follow the Figma design "Storytelling App Design for Kids", adapted to Whyzy.
+
 ### Should Have (Post-Pilot)
 
 - FR-40: Verifiable parental consent under DPDP Rule 10 (for example DigiLocker).
@@ -155,6 +169,10 @@ Whyzy is a voice-first, safe AI assistant for children aged 4 and up. Children m
 | 12 | Hindi input test cases need native-speaker review. | TBD | Medium |
 | 13 | Retention job mechanism (for example Vercel Cron) not specified. | TBD | Low |
 | 14 | Behaviour when a child exceeds the per-child rate limit not specified. | TBD | Low |
+| 15 | Publish content automatically after both checks, or only after operator approval? | Operator | High |
+| 16 | Pre-generate and store narration audio for published content, or generate speech each time? | Operator | Medium |
+| 17 | Which proposed modules to keep (SPEC.md, Content cards and modules). | Operator | Medium |
+| 18 | Nursery rhymes: original only, or also public-domain traditional rhymes (licence check)? | Operator | Medium |
 
 ## 9. Assumptions
 
