@@ -40,4 +40,6 @@ Voice-first, safe AI assistant for children aged 4+. Invite-only pilot.
 - `src/lib/family-db.ts`, `src/lib/family.ts`: create, open and drop family DBs; account deletion.
 - `src/lib/child-mode.ts`: signed child-mode cookie; parent area needs the PIN while it is set.
 - `FAMILY_DB_LOCAL_DIR`: local SQLite family DBs for development and tests only.
+- `src/lib/ai/`: model config (`WHYZY_MODEL`, `WHYZY_STAGE`) and age-band system prompt.
+- `src/lib/chat/`: chat service (limits, model call, logging); `src/app/api/chat/route.ts`: child chat API.
 - `OPERATOR_TODO.md`: things only the operator can do.

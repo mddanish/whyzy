@@ -3,6 +3,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { Card, Loading } from "@/app/ui";
 import { getChildContext } from "@/lib/dal";
+import { Chat } from "./chat";
 
 export default function ChildPage() {
   return (
@@ -19,8 +20,8 @@ async function Child() {
   if (!ctx) redirect("/parent");
   return (
     <>
-      <p className="mb-6 text-lg">Hi {ctx.child.displayName}! Whyzy is getting ready.</p>
-      <Link href="/unlock" className="text-sm underline">Grown-ups</Link>
+      <Chat name={ctx.child.displayName} />
+      <Link href="/unlock" className="mt-6 block text-sm underline">Grown-ups</Link>
     </>
   );
 }
