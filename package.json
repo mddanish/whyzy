@@ -9,11 +9,12 @@
     "lint": "eslint",
     "test": "vitest run",
     "typecheck": "tsc --noEmit",
-    "db:generate": "drizzle-kit generate && drizzle-kit generate --config drizzle.family.config.ts",
+    "db:generate": "drizzle-kit generate && drizzle-kit generate --config drizzle.family.config.ts && drizzle-kit generate --config drizzle.content.config.ts",
     "db:migrate": "tsx --env-file-if-exists=.env.local scripts/migrate-central.ts",
     "turso:setup": "tsx --env-file-if-exists=.env.local scripts/turso-setup.ts",
     "keys:create": "tsx --env-file-if-exists=.env.local scripts/create-access-keys.ts",
-    "redteam:live": "tsx --env-file-if-exists=.env.local scripts/redteam-live.ts"
+    "redteam:live": "tsx --env-file-if-exists=.env.local scripts/redteam-live.ts",
+    "content:migrate": "tsx --env-file-if-exists=.env.local scripts/content-migrate.ts"
   },
   "dependencies": {
     "@ai-sdk/react": "^4.0.163",

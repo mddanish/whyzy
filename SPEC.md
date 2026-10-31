@@ -336,7 +336,7 @@ Each module is one section of the library. Requested by the operator:
 - **Nursery rhymes:** original rhymes, plus traditional public-domain rhymes.
 - **Good things and bad things:** good and bad habits and choices (sharing, honesty, brushing teeth, not hitting).
 
-Proposed, for the operator to accept or drop:
+Also included (accepted by the operator):
 
 - **Fun facts:** animals, space, nature, the body.
 - **Riddles and jokes:** gentle, age-appropriate.
@@ -395,13 +395,13 @@ Proposed, for the operator to accept or drop:
 - Content is read aloud with the same TTS as chat: server-side ElevenLabs, or the browser's on-device voice as a fallback.
 - Child audio is still never recorded or stored.
 
-**Open items**
+**Decisions (operator, 31 Oct 2026)**
 
-- [ ] Operator review: publish automatically after both checks pass, or only after an operator approves each item?
-- [ ] Pre-generate and store narration audio for published content (faster, fewer TTS calls), or generate speech each time?
-- [ ] Which proposed modules to keep.
-- [ ] Source and licence check for traditional nursery rhymes (public domain only).
-- [ ] Hindi content later, or English only (replies are English today).
+- Items publish automatically once rule moderation and the LLM validator both pass.
+- Narration audio is made once per published item and stored.
+- All proposed modules are kept (12 modules).
+- Nursery rhymes: both original rhymes and traditional public-domain rhymes (`source = traditional`).
+- Content is English only.
 
 ## Build phases for Claude Code
 

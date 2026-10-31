@@ -92,13 +92,15 @@ Whyzy is a voice-first, safe AI companion for children aged 4 and up. Its main e
 
 **Content cards and modules (v2)**
 - FR-60: The main child experience is a card library: module → collection → content card (with optional parts).
-- FR-61: Modules include Stories, Poems, Nursery rhymes, and Good things and bad things; further modules are added from the proposed list in SPEC.md once the operator accepts them.
+- FR-61: Twelve modules: Stories, Poems, Nursery rhymes, Good things and bad things, Fun facts, Riddles and jokes, Why questions, Feelings and kindness, Calm and bedtime, Numbers and letters, Festivals and India, Moral stories. Content is English only.
 - FR-62: Content lives in a separate `content` Turso database in Mumbai. Children only receive items with status `published`.
 - FR-63: Each module has a versioned `AGENT.md` and `SKILL.md` used to generate its content; a shared validator agent checks safety.
 - FR-64: Content generation is operator-only, in batches. Nothing is generated while a child uses the app.
 - FR-65: Every new item passes rule-based moderation and a separate LLM safety validation before it can be published; failures are stored as `rejected` with the reason.
 - FR-66: Each item stores its generation metadata (module, agent and skill versions, model, date, validator verdict).
-- FR-67: Published content can be unpublished at once.
+- FR-67: Items publish automatically once both checks pass; published content can be unpublished at once.
+- FR-67a: Narration audio is generated once per published item and stored.
+- FR-67b: Nursery rhymes include original and traditional public-domain rhymes, marked by source.
 - FR-68: Per child, the parent controls: Whyzy on or off (master switch), which modules are allowed, chat on or off (default off), and show text on or off (default off, so audio only).
 - FR-69: The child sees only what the parent turned on.
 - FR-70: Tapping a content card plays it as audio with the avatar; text shows only if enabled.
@@ -169,10 +171,6 @@ Whyzy is a voice-first, safe AI companion for children aged 4 and up. Its main e
 | 12 | Hindi input test cases need native-speaker review. | TBD | Medium |
 | 13 | Retention job mechanism (for example Vercel Cron) not specified. | TBD | Low |
 | 14 | Behaviour when a child exceeds the per-child rate limit not specified. | TBD | Low |
-| 15 | Publish content automatically after both checks, or only after operator approval? | Operator | High |
-| 16 | Pre-generate and store narration audio for published content, or generate speech each time? | Operator | Medium |
-| 17 | Which proposed modules to keep (SPEC.md, Content cards and modules). | Operator | Medium |
-| 18 | Nursery rhymes: original only, or also public-domain traditional rhymes (licence check)? | Operator | Medium |
 
 ## 9. Assumptions
 
