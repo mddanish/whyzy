@@ -2,7 +2,7 @@
 
 import { useChat } from "@ai-sdk/react";
 import { DefaultChatTransport, type UIMessage } from "ai";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useState } from "react";
 import { SPEECH_LANG, speak, usePushToTalk } from "@/lib/voice/speech";
 
 type Meta = { picture: string; kind: string; tts: string };
@@ -19,9 +19,15 @@ export function metaOf(m: ChatMessage): Meta | undefined {
 export function Chat({ name, language }: { name: string; language: "en" | "hi" }) {
   const [input, setInput] = useState("");
   const [speaking, setSpeaking] = useState(false);
-  const spoken = useRef(new Set<string>());
   const { messages, sendMessage, status } = useChat<ChatMessage>({
     transport: new DefaultChatTransport({ api: "/api/chat" }),
+    // Speak each finished reply once.
+    onFinish: ({ message, isAbort }) => {
+      const meta = metaOf(message);
+      if (isAbort || !meta) return;
+      setSpeaking(true);
+      speak(textOf(message), meta.tts, () => setSpeaking(false));
+    },
   });
   const busy = status === "submitted" || status === "streaming";
 
@@ -33,18 +39,6 @@ export function Chat({ name, language }: { name: string; language: "en" | "hi" }
     [busy, sendMessage],
   );
   const talk = usePushToTalk(SPEECH_LANG[language], send);
-
-  // Speak each finished reply once.
-  useEffect(() => {
-    if (status !== "ready") return;
-    const last = messages.at(-1);
-    if (!last || last.role !== "assistant" || spoken.current.has(last.id)) return;
-    const meta = metaOf(last);
-    if (!meta) return;
-    spoken.current.add(last.id);
-    setSpeaking(true);
-    speak(textOf(last), meta.tts, () => setSpeaking(false));
-  }, [messages, status]);
 
   return (
     <div className="flex flex-col gap-4">
