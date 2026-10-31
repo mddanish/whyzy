@@ -20,7 +20,7 @@ async function Child() {
   if (!ctx) redirect("/parent");
   return (
     <>
-      <Chat name={ctx.child.displayName} />
+      <Chat name={ctx.child.displayName} language={ctx.child.inputLanguage} />
       <Link href="/unlock" className="mt-6 block text-sm underline">Grown-ups</Link>
     </>
   );

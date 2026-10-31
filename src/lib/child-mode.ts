@@ -1,20 +1,14 @@
 import "server-only";
-import { createHmac, timingSafeEqual } from "node:crypto";
 import { cookies } from "next/headers";
+import { sign, verify } from "@/lib/sign";
 
 // Child mode: a signed, httpOnly cookie naming the child profile in use.
 // While it is set, the parent area needs the parent PIN.
 const COOKIE = "wz_child";
 
-function sign(value: string): string {
-  const secret = process.env.AUTH_SECRET;
-  if (!secret) throw new Error("AUTH_SECRET is not set");
-  return createHmac("sha256", secret).update(value).digest("base64url");
-}
-
 export function encodeChildCookie(parentId: string, childId: string): string {
   const value = `${parentId}.${childId}`;
-  return `${value}.${sign(value)}`;
+  return `${value}.${sign(value, "child-mode")}`;
 }
 
 export function decodeChildCookie(raw: string | undefined, parentId: string): string | null {
@@ -22,9 +16,7 @@ export function decodeChildCookie(raw: string | undefined, parentId: string): st
   const parts = raw.split(".");
   if (parts.length !== 3) return null;
   const [pid, cid, mac] = parts;
-  const expected = Buffer.from(sign(`${pid}.${cid}`));
-  const actual = Buffer.from(mac);
-  if (expected.length !== actual.length || !timingSafeEqual(expected, actual)) return null;
+  if (!verify(`${pid}.${cid}`, "child-mode", mac)) return null;
   return pid === parentId ? cid : null;
 }
 

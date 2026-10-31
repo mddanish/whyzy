@@ -44,4 +44,5 @@ Voice-first, safe AI assistant for children aged 4+. Invite-only pilot.
 - `src/lib/chat/`: chat service (limits, model call, logging); `src/app/api/chat/route.ts`: child chat API.
 - `src/lib/safety/`: input filter (rules, PII stripping, intent), fixed replies, output moderation.
 - `tests/redteam/cases.json`: versioned red-team set; `tests/redteam.test.ts` runs it in `npm test`, CI and every Vercel build. `npm run redteam:live` runs it against the real model.
+- `src/lib/voice/`: on-device push-to-talk (`processLocally = true`, no cloud fallback), ElevenLabs TTS; `src/app/api/tts/route.ts` speaks only server-signed replies.
 - `OPERATOR_TODO.md`: things only the operator can do.

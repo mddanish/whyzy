@@ -3,6 +3,7 @@ import * as z from "zod";
 import { chatModel } from "@/lib/ai/model";
 import { handleChildMessage, type Turn } from "@/lib/chat/service";
 import { getChildContext } from "@/lib/dal";
+import { sign } from "@/lib/sign";
 
 export const maxDuration = 30;
 
@@ -44,7 +45,7 @@ export async function POST(req: Request) {
       writer.write({ type: "text-start", id: "reply" });
       writer.write({ type: "text-delta", id: "reply", delta: result.text });
       writer.write({ type: "text-end", id: "reply" });
-      writer.write({ type: "data-meta", data: { picture: result.picture, kind: result.kind } });
+      writer.write({ type: "data-meta", data: { picture: result.picture, kind: result.kind, tts: sign(result.text, `tts:${ctx.child.id}`) } });
       writer.write({ type: "finish" });
     },
   });
