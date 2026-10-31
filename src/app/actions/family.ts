@@ -13,6 +13,7 @@ import { deleteParentAccount, ensureFamily, familyDb } from "@/lib/family";
 import { hashPassword, verifyPassword } from "@/lib/password";
 import { deleteAllLogs } from "@/lib/retention";
 import { PET_SLUGS } from "@/lib/pets";
+import { parseControls } from "@/lib/controls";
 
 export type ActionState = { message?: string; ok?: boolean } | undefined;
 
@@ -30,7 +31,12 @@ export async function saveChildAction(_prev: ActionState, formData: FormData): P
   const { db } = await requireFamily();
   const parsed = ChildSchema.safeParse(Object.fromEntries(formData));
   if (!parsed.success) return { message: parsed.error.issues[0].message };
-  const { id, ...values } = parsed.data;
+  const controls = parseControls(formData);
+  if (controls.whyzyEnabled && controls.allowedModules?.length === 0 && !controls.chatEnabled) {
+    return { message: "Pick at least one module, or turn on chat." };
+  }
+  const { id, ...fields } = parsed.data;
+  const values = { ...fields, ...controls };
   if (id) {
     await db.update(childProfiles).set(values).where(eq(childProfiles.id, id));
   } else {
@@ -104,8 +110,12 @@ export async function startChildModeAction(formData: FormData): Promise<void> {
   const { parent, db } = await requireFamily();
   const s = await getFamilySettings(db);
   const childId = String(formData.get("childId") ?? "");
-  const child = await db.select({ id: childProfiles.id }).from(childProfiles).where(eq(childProfiles.id, childId)).get();
-  if (!child || !s.parentPinHash || !s.consentAt) redirect("/parent");
+  const child = await db
+    .select({ id: childProfiles.id, whyzyEnabled: childProfiles.whyzyEnabled })
+    .from(childProfiles)
+    .where(eq(childProfiles.id, childId))
+    .get();
+  if (!child || !child.whyzyEnabled || !s.parentPinHash || !s.consentAt) redirect("/parent");
   await enterChildMode(parent.id, child.id);
   console.info(`[child-mode] start child=${child.id}`);
   redirect("/child");

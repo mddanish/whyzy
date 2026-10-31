@@ -25,6 +25,11 @@ export const childProfiles = sqliteTable("child_profiles", {
   avatarPet: text("avatar_pet").notNull(),
   inputLanguage: text("input_language").$type<InputLanguage>().notNull().default("en"),
   dailyMinutes: integer("daily_minutes").notNull().default(30),
+  // Parent controls (v2). The child gets only what is turned on here.
+  whyzyEnabled: integer("whyzy_enabled", { mode: "boolean" }).notNull().default(false),
+  allowedModules: text("allowed_modules", { mode: "json" }).$type<string[] | null>(), // null = all modules
+  chatEnabled: integer("chat_enabled", { mode: "boolean" }).notNull().default(false),
+  showText: integer("show_text", { mode: "boolean" }).notNull().default(false),
   createdAt: createdAt(),
 });
 

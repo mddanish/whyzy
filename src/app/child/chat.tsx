@@ -24,6 +24,8 @@ export type ChildAppProps = {
   name: string;
   language: "en" | "hi";
   pet: string;
+  chatEnabled: boolean;
+  showText: boolean;
   remainingSeconds: number;
   intro: { text: string; sig: string };
   windDown: { text: string; sig: string };
@@ -138,12 +140,17 @@ export function ChildApp(props: ChildAppProps) {
 
       {stage === "chat" && (
         <>
-          <div className="flex min-h-24 w-full max-w-xl items-center gap-3 rounded-3xl bg-white/90 p-5 text-xl leading-relaxed" aria-live="polite">
-            {picture && <span className="text-5xl" aria-hidden>{picture}</span>}
-            <p>{busy ? "Hmm, let me think…" : lastReply ? textOf(lastReply) : props.intro.text}</p>
-          </div>
+          {props.showText ? (
+            <div className="flex min-h-24 w-full max-w-xl items-center gap-3 rounded-3xl bg-white/90 p-5 text-xl leading-relaxed" aria-live="polite">
+              {picture && <span className="text-5xl" aria-hidden>{picture}</span>}
+              <p>{busy ? "Hmm, let me think…" : lastReply ? textOf(lastReply) : props.intro.text}</p>
+            </div>
+          ) : (
+            // Audio only: no text on screen; the picture keyword still shows.
+            picture && <span className="text-7xl" aria-hidden>{picture}</span>
+          )}
 
-          {talk.support === "available" ? (
+          {!props.chatEnabled ? null : talk.support === "available" ? (
             <button
               type="button"
               onPointerDown={talk.start}
@@ -157,15 +164,17 @@ export function ChildApp(props: ChildAppProps) {
               <span className="block text-base font-semibold">{talk.listening ? "Listening" : "Hold to talk"}</span>
             </button>
           ) : (
-            talk.support !== "checking" && <p className="text-center">Talking is not set up on this device. Ask a grown-up to check voice in the parent area, or type below.</p>
+            talk.support !== "checking" && <p className="text-center">Talking is not set up on this device. Ask a grown-up to check voice in the parent area{props.showText ? ", or type below" : ""}.</p>
           )}
 
           <div className="flex gap-3">
-            <button className={`${big} bg-white`} onClick={() => setTyping((t) => !t)} aria-label="Type instead">⌨️</button>
+            {props.chatEnabled && props.showText && (
+              <button className={`${big} bg-white`} onClick={() => setTyping((t) => !t)} aria-label="Type instead">⌨️</button>
+            )}
             <button className={`${big} bg-white`} onClick={() => setStage("pick")} aria-label="Pick your pet">🐾</button>
           </div>
 
-          {typing && (
+          {typing && props.chatEnabled && props.showText && (
             <form
               onSubmit={(e) => {
                 e.preventDefault();

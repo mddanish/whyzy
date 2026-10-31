@@ -1,6 +1,7 @@
 import { createUIMessageStream, createUIMessageStreamResponse, type UIMessage } from "ai";
 import * as z from "zod";
 import { chatModel } from "@/lib/ai/model";
+import { chatAllowed } from "@/lib/controls";
 import { handleChildMessage, type Turn } from "@/lib/chat/service";
 import { getChildContext } from "@/lib/dal";
 import { sign } from "@/lib/sign";
@@ -25,6 +26,7 @@ function toTurns(messages: UIMessage[]): Turn[] {
 export async function POST(req: Request) {
   const ctx = await getChildContext();
   if (!ctx) return new Response("Not in child mode", { status: 401 });
+  if (!chatAllowed(ctx.child)) return new Response("Chat is off", { status: 403 });
   const parsed = Body.safeParse(await req.json().catch(() => null));
   if (!parsed.success) return new Response("Bad request", { status: 400 });
 

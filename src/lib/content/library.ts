@@ -133,19 +133,22 @@ export async function listCollections(db: ContentDb, moduleId: string, band: Age
     .orderBy(asc(collections.sortOrder), asc(collections.title));
 }
 
-export async function listItems(db: ContentDb, collectionId: string, band: AgeBand) {
+// `allowed`: module IDs the parent allows; omit for no restriction (operator tools).
+const inModules = (allowed?: string[]) => (allowed ? inArray(items.moduleId, allowed) : undefined);
+
+export async function listItems(db: ContentDb, collectionId: string, band: AgeBand, allowed?: string[]) {
   return db
     .select({ id: items.id, title: items.title, tags: items.tags })
     .from(items)
-    .where(and(eq(items.collectionId, collectionId), visible(band)))
+    .where(and(eq(items.collectionId, collectionId), visible(band), inModules(allowed)))
     .orderBy(asc(items.publishedAt));
 }
 
-export async function getItem(db: ContentDb, id: string, band: AgeBand) {
+export async function getItem(db: ContentDb, id: string, band: AgeBand, allowed?: string[]) {
   const item = await db
     .select({ id: items.id, title: items.title, moduleId: items.moduleId, collectionId: items.collectionId })
     .from(items)
-    .where(and(eq(items.id, id), visible(band)))
+    .where(and(eq(items.id, id), visible(band), inModules(allowed)))
     .get();
   if (!item) return null;
   const parts = await db

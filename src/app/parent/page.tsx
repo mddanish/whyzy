@@ -73,11 +73,16 @@ async function ParentHome() {
                 <p className="text-xs opacity-70">
                   Age {c.ageBand} · {c.inputLanguage === "hi" ? "Hindi" : "English"} · {c.dailyMinutes} min a day
                 </p>
+                <p className="text-xs opacity-70">
+                  {c.whyzyEnabled
+                    ? `Whyzy on · ${c.allowedModules === null ? "all modules" : `${c.allowedModules.length} module(s)`} · chat ${c.chatEnabled ? "on" : "off"} · ${c.showText ? "text shown" : "audio only"}`
+                    : "Whyzy off"}
+                </p>
               </div>
               <Link href={`/parent/children/${c.id}`} className={secondaryButtonClass}>Edit</Link>
               <form action={startChildModeAction}>
                 <input type="hidden" name="childId" value={c.id} />
-                <button className={secondaryButtonClass} disabled={!s.parentPinHash}>Start child mode</button>
+                <button className={secondaryButtonClass} disabled={!s.parentPinHash || !c.whyzyEnabled} title={c.whyzyEnabled ? undefined : "Turn on Whyzy for this child first"}>Start child mode</button>
               </form>
             </li>
           );

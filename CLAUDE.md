@@ -58,6 +58,7 @@ Voice-first, safe AI assistant for children aged 4+. Invite-only pilot.
 - `content/seed/`: hand-written seed items (plus traditional public-domain rhymes).
 - `src/lib/content/generate.ts` (`CONTENT_MODEL`), `validate.ts` (`CONTENT_VALIDATOR_MODEL`): pipeline. Validator errors leave items as drafts; failed checks reject them.
 - `tests/redteam/content-cases.json`: unsafe content that must never publish.
+- `src/lib/controls.ts`: per-child parent controls (Whyzy on/off, allowed modules, chat, show text); enforced in `/api/chat`, `/api/content` and the child page. Defaults: Whyzy off, chat off, audio only.
 - `src/lib/retention.ts` + `src/app/api/cron/retention/route.ts`: daily retention job (Vercel Cron, `CRON_SECRET`).
 - `docs/DATA_HYGIENE.md`: data hygiene checklist status.
 - `OPERATOR_TODO.md`: things only the operator can do.
