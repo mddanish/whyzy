@@ -1,6 +1,7 @@
-import { gateway, generateText, type LanguageModel, Output } from "ai";
+import { generateText, type LanguageModel, Output } from "ai";
 import * as z from "zod";
 import type { AgeBand } from "@/db/family/schema";
+import { languageModel } from "@/lib/ai/model";
 import { matches, normalize, RULES } from "./rules";
 
 export type ModerationResult = { ok: true } | { ok: false; category: string };
@@ -34,7 +35,7 @@ const Verdict = z.object({ safe: z.boolean(), category: z.string().optional().de
 export async function moderateOutputModel(
   reply: string,
   ageBand: AgeBand,
-  model: LanguageModel | undefined = process.env.MODERATION_MODEL ? gateway(process.env.MODERATION_MODEL) : undefined,
+  model: LanguageModel | undefined = process.env.MODERATION_MODEL ? languageModel(process.env.MODERATION_MODEL) : undefined,
 ): Promise<ModerationResult> {
   if (!model) return { ok: true };
   try {
@@ -47,7 +48,7 @@ export async function moderateOutputModel(
         "purchases, links, secrets from parents, asking for personal details, claiming to be a person or a friend, " +
         'or anything harmful for a child. Answer JSON {"safe": boolean, "category": string}.',
       prompt: `Reply to review:\n"""${reply.slice(0, 1500)}"""`,
-      maxOutputTokens: 60,
+      maxOutputTokens: 800,
       temperature: 0,
     });
     return output.safe ? { ok: true } : { ok: false, category: `model:${output.category || "unsafe"}` };

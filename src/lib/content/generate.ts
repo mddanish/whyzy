@@ -1,10 +1,10 @@
-import { gateway, generateText, type LanguageModel, Output } from "ai";
+import { generateText, type LanguageModel, Output } from "ai";
 import { eq } from "drizzle-orm";
 import * as z from "zod";
 import type { ContentDb } from "@/db/content/client";
 import { items } from "@/db/content/schema";
 import type { AgeBand } from "@/db/family/schema";
-import { DEFAULT_TEST_MODEL, isBlockedModel } from "@/lib/ai/model";
+import { DEFAULT_TEST_MODEL, isBlockedModel, languageModel } from "@/lib/ai/model";
 import { moduleAgent, moduleSkill } from "./agents";
 import { createDraft, ensureCollection } from "./library";
 import { MODULES } from "./modules";
@@ -30,7 +30,7 @@ export function generatorModelName(): string {
 export async function generateDrafts(
   db: ContentDb,
   opts: { moduleId: string; collectionSlug: string; ageBand: AgeBand; count: number },
-  generator: { model: LanguageModel; name: string } = { model: gateway(generatorModelName()), name: generatorModelName() },
+  generator: { model: LanguageModel; name: string } = { model: languageModel(generatorModelName()), name: generatorModelName() },
 ): Promise<string[]> {
   const mod = MODULES.find((m) => m.id === opts.moduleId);
   const col = mod?.collections.find((c) => c.slug === opts.collectionSlug);

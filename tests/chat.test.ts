@@ -4,8 +4,8 @@ import { messages, settings } from "@/db/family/schema";
 import { modelConfig } from "@/lib/ai/model";
 import { systemPrompt, PERSONA_LINE, INTRO_LINE } from "@/lib/ai/prompt";
 import { parseLoose } from "@/lib/chat/generate";
-import { FALLBACK, handleChildMessage, SLOW_DOWN, TIME_UP } from "@/lib/chat/service";
-import { addSeconds, MAX_PER_MINUTE } from "@/lib/chat/usage";
+import { FALLBACK, handleChildMessage, TIME_UP } from "@/lib/chat/service";
+import { addSeconds, MAX_PER_MINUTE, takeMessageSlot } from "@/lib/chat/usage";
 import type { FamilyDb } from "@/lib/family-db";
 import { addChild, json, mockModel, tempFamily } from "./support/helpers";
 
@@ -27,6 +27,10 @@ describe("model config", () => {
     expect(modelConfig("pilot", "anthropic/claude-haiku-5.5").providerOptions).toEqual({
       gateway: { disallowPromptTraining: true, zeroDataRetention: true },
     });
+  });
+  it("requires AI Gateway in the pilot (OpenRouter is test only)", () => {
+    expect(() => modelConfig("pilot", "anthropic/claude-haiku-5.5", "openrouter")).toThrow(/AI Gateway/);
+    expect(modelConfig("test", "nvidia/nemotron-3.5-super-vl:free", "openrouter").providerOptions).toEqual({});
   });
   it("blocks Gemini in every stage", () => {
     expect(() => modelConfig("test", "google/gemini-3-flash")).toThrow();
@@ -69,9 +73,12 @@ describe("chat service", () => {
 
   it("rate-limits each child", async () => {
     const child = await addChild(db);
-    for (let i = 0; i < MAX_PER_MINUTE; i++) expect((await ask("Hi", undefined, child)).kind).toBe("reply");
-    expect((await ask("Hi", undefined, child)).text).toBe(SLOW_DOWN);
+    const now = new Date("2026-10-31T10:00:05Z"); // fixed time: no minute rollover mid-test
+    for (let i = 0; i < MAX_PER_MINUTE; i++) expect(await takeMessageSlot(db, child.id, now)).toBe(true);
+    expect(await takeMessageSlot(db, child.id, now)).toBe(false);
+    expect(await takeMessageSlot(db, child.id, new Date("2026-10-31T10:01:05Z"))).toBe(true);
   });
+
 
   it("stores messages only when logging is on", async () => {
     await ask("Why is the sky blue?");

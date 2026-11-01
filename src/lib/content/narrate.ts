@@ -3,7 +3,8 @@ import { and, asc, eq, notExists } from "drizzle-orm";
 import type { ContentDb } from "@/db/content/client";
 import { itemAudio, itemParts, items } from "@/db/content/schema";
 
-export type Speech = { voice: string; mime: string; synthesize: (text: string) => Promise<ArrayBuffer> };
+// pauseMs: wait between requests (AI Gateway allows few speech requests a minute).
+export type Speech = { voice: string; mime: string; synthesize: (text: string) => Promise<ArrayBuffer>; pauseMs?: number };
 
 const hash = (t: string) => createHash("sha256").update(t).digest("hex");
 
@@ -36,6 +37,7 @@ export async function narrateItem(db: ContentDb, itemId: string, speech: Speech)
   let made = 0;
   for (const p of parts) {
     if (done.has(p.idx)) continue;
+    if (made > 0 && speech.pauseMs) await new Promise((r) => setTimeout(r, speech.pauseMs));
     const audio = Buffer.from(await speech.synthesize(p.text));
     await db
       .insert(itemAudio)
@@ -63,15 +65,23 @@ export async function narrateAll(db: ContentDb, speech?: Speech): Promise<{ item
   if (!s) return { items: 0, parts: 0 };
   let parts = 0;
   const ids = await itemsMissingAudio(db);
-  for (const id of ids) parts += await narrateItem(db, id, s);
+  for (const [i, id] of ids.entries()) {
+    if (i > 0 && s.pauseMs) await new Promise((r) => setTimeout(r, s.pauseMs));
+    parts += await narrateItem(db, id, s);
+  }
   return { items: ids.length, parts };
 }
 
 async function elevenLabsSpeechOrNull(): Promise<Speech | null> {
-  const { elevenLabsSpeech, ttsConfigured } = await import("@/lib/voice/tts");
+  const { elevenLabsSpeech, ttsConfigured, ttsVoiceLabel } = await import("@/lib/voice/tts");
   if (!ttsConfigured()) {
-    console.warn("ElevenLabs is not configured (ELEVENLABS_API_KEY, ELEVENLABS_VOICE_ID); skipping narration.");
+    console.warn("Speech is not configured (ELEVENLABS_VOICE_ID, and WHYZY_TTS settings); skipping narration.");
     return null;
   }
-  return { voice: `elevenlabs:${process.env.ELEVENLABS_VOICE_ID}`, mime: "audio/mpeg", synthesize: (t) => elevenLabsSpeech(t) };
+  return {
+    voice: ttsVoiceLabel(),
+    mime: "audio/mpeg",
+    synthesize: (t) => elevenLabsSpeech(t),
+    pauseMs: Number(process.env.NARRATE_DELAY_MS ?? 13000), // 5 a minute on AI Gateway
+  };
 }

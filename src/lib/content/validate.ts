@@ -1,10 +1,10 @@
-import { gateway, generateText, type LanguageModel, Output } from "ai";
+import { generateText, type LanguageModel, Output } from "ai";
 import { asc, eq } from "drizzle-orm";
 import * as z from "zod";
 import type { ContentDb } from "@/db/content/client";
 import { itemParts, items } from "@/db/content/schema";
 import { AGE_BANDS, type AgeBand } from "@/db/family/schema";
-import { isBlockedModel } from "@/lib/ai/model";
+import { isBlockedModel, languageModel } from "@/lib/ai/model";
 import { moderateOutputRules } from "@/lib/safety/moderate";
 import { validatorAgent } from "./agents";
 import { setStatus } from "./library";
@@ -68,7 +68,7 @@ export async function checkContentLlm(
         title: item.title,
         parts: item.parts,
       }),
-      maxOutputTokens: 200,
+      maxOutputTokens: 800,
       temperature: 0,
     });
     const ok = output.safe && output.ageFit;
@@ -118,5 +118,5 @@ export async function validateAndPublish(
 
 export function defaultValidator() {
   const name = validatorModelName();
-  return { model: gateway(name), name };
+  return { model: languageModel(name), name };
 }
