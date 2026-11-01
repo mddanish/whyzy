@@ -52,7 +52,7 @@ Voice-first, safe AI assistant for children aged 4+. Invite-only pilot.
 - `src/lib/chat/`: chat service (limits, model call, logging); `src/app/api/chat/route.ts`: child chat API.
 - `src/lib/safety/`: input filter (rules, PII stripping, intent), fixed replies, output moderation.
 - `tests/redteam/cases.json`: versioned red-team set; `tests/redteam.test.ts` runs it in `npm test`, CI and every Vercel build. `npm run redteam:live` runs it against the real model.
-- `src/lib/voice/`: on-device push-to-talk (`processLocally = true`, no cloud fallback), ElevenLabs TTS; `src/app/api/tts/route.ts` speaks only server-signed replies.
+- `src/lib/voice/`: on-device push-to-talk (`processLocally = true`, no cloud fallback), TTS (`WHYZY_TTS`: ElevenLabs via AI Gateway by default, or direct with a key or Vercel Connect connector); `src/app/api/tts/route.ts` speaks only server-signed replies.
 - `src/app/child/`: child mode. `child-app.tsx` (home of module cards, module shelves, player, chat, pet picker, wind-down), `cards.tsx` (card styles adapted from the Figma "Storytelling App Design for Kids"; theme in `globals.css` `.wz-*`), `player.tsx` (stored narration, device voice fallback), `chat-view.tsx`. Audio-only mode shows no text; `src/lib/avatar.ts`: avatar states and sprite manifest; `src/lib/pets.ts`: approved pets.
 - `src/db/content/`: content DB schema and client (`CONTENT_DB_URL`/`CONTENT_DB_TOKEN`); `drizzle/content/`: its migrations (`npm run content:migrate` also syncs modules).
 - `src/lib/content/`: module list and library (drafts, status changes, published-only reads); `src/app/api/content/route.ts`: child library API.
