@@ -3,8 +3,17 @@
 // (SPEC.md, Voice); never from the browser.
 // Only the moderated reply text is sent, with names and details removed.
 // Training opt-out must be on in the ElevenLabs account (OPERATOR_TODO.md).
+// The API key comes from ELEVENLABS_API_KEY, or from a Vercel Connect
+// connector (ELEVENLABS_CONNECTOR, e.g. "elevenlabs/whyzy"), which issues it
+// at runtime using the deployment's OIDC token.
 export function ttsConfigured(): boolean {
-  return Boolean(process.env.ELEVENLABS_API_KEY && process.env.ELEVENLABS_VOICE_ID);
+  return Boolean((process.env.ELEVENLABS_API_KEY || process.env.ELEVENLABS_CONNECTOR) && process.env.ELEVENLABS_VOICE_ID);
+}
+
+async function apiKey(): Promise<string> {
+  if (process.env.ELEVENLABS_API_KEY) return process.env.ELEVENLABS_API_KEY;
+  const { getToken } = await import("@vercel/connect");
+  return getToken(process.env.ELEVENLABS_CONNECTOR!, { subject: { type: "app" } } as never);
 }
 
 export async function elevenLabsSpeech(text: string, signal?: AbortSignal): Promise<ArrayBuffer> {
@@ -14,7 +23,7 @@ export async function elevenLabsSpeech(text: string, signal?: AbortSignal): Prom
     {
       method: "POST",
       headers: {
-        "xi-api-key": process.env.ELEVENLABS_API_KEY!,
+        "xi-api-key": await apiKey(),
         "Content-Type": "application/json",
         Accept: "audio/mpeg",
       },

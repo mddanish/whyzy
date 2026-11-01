@@ -26,6 +26,7 @@
     "@auth/drizzle-adapter": "^1.11.3",
     "@libsql/client": "^0.18.0",
     "@openrouter/ai-sdk-provider": "^3.1.0",
+    "@vercel/connect": "^2.7.0",
     "ai": "^7.0.159",
     "drizzle-orm": "^0.45.4",
     "next": "16.4.3",

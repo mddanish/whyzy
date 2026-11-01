@@ -70,7 +70,7 @@ export async function narrateAll(db: ContentDb, speech?: Speech): Promise<{ item
 async function elevenLabsSpeechOrNull(): Promise<Speech | null> {
   const { elevenLabsSpeech, ttsConfigured } = await import("@/lib/voice/tts");
   if (!ttsConfigured()) {
-    console.warn("ElevenLabs is not configured (ELEVENLABS_API_KEY, ELEVENLABS_VOICE_ID); skipping narration.");
+    console.warn("ElevenLabs is not configured (ELEVENLABS_API_KEY or ELEVENLABS_CONNECTOR, and ELEVENLABS_VOICE_ID); skipping narration.");
     return null;
   }
   return { voice: `elevenlabs:${process.env.ELEVENLABS_VOICE_ID}`, mime: "audio/mpeg", synthesize: (t) => elevenLabsSpeech(t) };
